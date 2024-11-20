@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Simple Recharge Card Generator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        #output {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* drop shadow effect */
+            margin-top: 10px; /* add space between output and buttons */
+            color: #FFFFFF; /* white text */
+            background-color: #000000; /* black background */
+            padding: 10px; /* optional padding */
+            font-family: monospace; /* fixed-width font for better readability */
+            white-space: pre-wrap; /* wrap long lines */
+            overflow-wrap: break-word; /* break long words */
+            border: 1px solid #333333; /* optional border */
+            border-radius: 5px; /* optional rounded corners */
+            }
+
+        .outputHidden {
+            display: none;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="display-5">Simple Recharge Card Formatter</h1>
+        
+        <div class="mb-3">
+          <label for="txtCompanyName" class="form-label">Company Name</label>
+          <input type="text" class="form-control form-control-lg" id="txtCompanyName" placeholder="Type your company name here">
+        </div>
+
+        <div class="mb-3">
+          <label for="lstNetworkAndAmount" class="form-label">Network and Amount</label>
+          <select class="form-select" aria-label="Network Code and Amount" id="lstNetworkAndAmount">
+              <option selected>Select network and amount</option>
+              <option value="A|100">AIRTEL ₦100</option>
+              <option value="A|200">AIRTEL ₦200</option>
+              <option value="A|500">AIRTEL ₦500</option>
+              <option value="M|100">MTN ₦100</option>
+              <option value="M|200">MTN ₦200</option>
+              <option value="M|500">MTN ₦500</option>
+              <option value="G|100">GLO ₦100</option>
+              <option value="G|200">GLO ₦200</option>
+              <option value="G|500">GLO ₦500</option>
+              <option value="N|100">9MOBILE ₦100</option>
+              <option value="N|200">9MOBILE ₦200</option>
+              <option value="N|500">9MOBILE ₦500</option>
+              <option value="E|100">ETISALAT ₦100</option>
+              <option value="E|200">ETISALAT ₦200</option>
+              <option value="E|500">ETISALAT ₦500</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="txtEpinDetails" class="form-label">EPIN Text</label>
+            <input type="text" class="form-control form-control-lg" id="txtEpinDetails" placeholder="Paste your long EPIN text here">
+            <div id="epinTextHelp" class="form-text">
+              Paste the exact text you copied from the TGR EPIN page. The text must contain the network name i.e. after every EPIN, the network name must follow. For example, 455689322 Airtel 77876866 Airtel...
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success btn-lg" id="btnFormatEpins" onclick="formatEpins()">Format EPINs</button>
+
+        <hr />
+        <button type="button" class="btn btn-primary btn-lg" id="btnCopyOutputContent" onclick="copyOutputContent()">Copy Output</button>
+        <h1 id="outputHeader" class="display-6">Output</h1>
+        <pre id="output" class="outputHidden"></pre>
+
+        <div class="col-md-12 text-center">
+            <a class="btn btn-default btn-xs" id="myButton" role="button"> &copy; <span id="footerYear"></span> Dammie Optimus Solutions Ltd.</a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+</html>
