@@ -130,11 +130,11 @@ function copyOutputContent() {
 
     document.getElementById("outputHeader").classList.add('blink'); // Add blinking class
 
-    // Remove the blinking class after 5 seconds
+    // Remove the blinking class after 10 seconds
     setTimeout(() => {
         document.getElementById("outputHeader").classList.remove('blink'); // Stop blinking
         blinkElement.style.display = 'block'; // Show the element
-    }, 5000);
+    }, 10000);
 }
 
 document.getElementById("footerYear").innerHTML = new Date().getFullYear();
