@@ -112,6 +112,7 @@ function formatEpins() {
     document.getElementById("output").innerHTML = epinFinalString.trim();
     document.getElementById("outputHeader").innerHTML = "Click Copy Output Button";
     document.getElementById('btnFormatEpins').disabled = true;
+    
 }
 
 function copyOutputContent() {
@@ -126,6 +127,14 @@ function copyOutputContent() {
 
     output.innerHTML = "";
     output.classList.add("outputHidden");
+
+    document.getElementById("outputHeader").classList.add('blink'); // Add blinking class
+
+    // Remove the blinking class after 5 seconds
+    setTimeout(() => {
+        document.getElementById("outputHeader").classList.remove('blink'); // Stop blinking
+        blinkElement.style.display = 'block'; // Show the element
+    }, 5000);
 }
 
 document.getElementById("footerYear").innerHTML = new Date().getFullYear();
