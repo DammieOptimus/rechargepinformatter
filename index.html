@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TGR EPIN Formatter - Dark Mode</title> <!-- Updated Title -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Dark Mode Delight Theme --- */
+        :root {
+            /* TGR Colors (Vibrant for Dark Mode) */
+            --tgr-red: #EF5350;         /* Slightly brighter red */
+            --tgr-blue: #42A5F5;        /* Slightly brighter blue */
+
+            /* Dark Mode Palette */
+            --primary-color: var(--tgr-red);
+            --secondary-color: var(--tgr-blue);
+            --accent-color: var(--tgr-blue); /* Focus Glow */
+
+            --bg-gradient-start: #1a1a1d; /* Very dark grey */
+            --bg-gradient-end: #111113;   /* Near black */
+            --card-bg: #2c2c31;          /* Dark card background */
+            --input-bg: #3a3a40;          /* Input background */
+            --input-border: #4a4a50;      /* Subtle input border */
+            --input-focus-border: var(--tgr-blue);
+            --input-focus-glow: rgba(66, 165, 245, 0.3); /* Blue glow */
+
+            --text-primary: #f5f5f5;      /* Primary light text */
+            --text-secondary: #bdbdbd;    /* Secondary grey text */
+            --text-placeholder: #757575;  /* Placeholder text */
+            --text-light: #ffffff;        /* Pure white for buttons etc */
+            --text-business: rgba(255, 255, 255, 0.6); /* Subtler white for business name */
+
+            --output-bg: #1f1f21;         /* Even darker output bg */
+            --output-text: #e0e0e0;       /* Output text */
+            --output-border: #333335;     /* Output border */
+
+            --shadow-color: rgba(0, 0, 0, 0.3); /* Darker shadow base */
+            --glow-color: rgba(66, 165, 245, 0.2); /* Subtle blue glow for card */
+
+            --success-color: #66BB6A;     /* Brighter Green */
+            --error-color: var(--tgr-red); /* Use primary red for errors */
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            /* Dark Gradient Background */
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            background-attachment: fixed;
+            padding: 30px 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        /* --- Layout & Container --- */
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 18px;
+            padding: 40px 50px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4), 0 0 15px var(--glow-color);
+            width: 90%;
+            max-width: 780px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- Typography --- */
+        .business-name { /* Style for the added business name */
+            text-align: center;
+            font-size: 0.95rem; /* Smaller than h1 */
+            color: var(--text-business); /* Subtler color */
+            font-weight: 400; /* Normal weight */
+            margin-bottom: 10px; /* Space below it */
+            letter-spacing: 1.5px; /* Elegant spacing */
+            text-transform: uppercase; /* Uppercase style */
+             opacity: 0.8;
+        }
+
+        h1.main-title {
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px; /* Keep margin below h1 */
+            margin-top: 0; /* Remove default top margin if any */
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--tgr-red) 0%, var(--tgr-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            padding-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        h2.output-title {
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            font-size: 1.7rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            text-align: left;
+        }
+
+        /* --- Form Elements --- */
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        .form-group:focus-within .form-label {
+             color: var(--tgr-blue);
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            appearance: none;
+        }
+        .form-control::placeholder {
+            color: var(--text-placeholder);
+            opacity: 1;
+        }
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            background-color: var(--card-bg);
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 4px var(--input-focus-glow);
+        }
+
+        .form-select {
+             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23bdbdbd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1.2rem center;
+            background-size: 16px 12px;
+            padding-right: 4rem;
+        }
+
+        .form-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        /* --- Buttons --- */
+        .button-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex-grow: 1;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+             color: var(--text-light);
+             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+         .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0));
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+            border-radius: inherit;
+        }
+        .btn:hover::before { opacity: 1; }
+        .btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .btn:active {
+            transform: translateY(-1px) scale(0.98);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-format { background: linear-gradient(45deg, var(--tgr-red), #F06292); }
+        .btn-format:hover { box-shadow: 0 8px 25px rgba(239, 83, 80, 0.3); }
+        .btn-format:disabled { background: #777; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none; }
+        .btn-format:disabled::before { display: none; }
+
+        .btn-copy { background: linear-gradient(45deg, var(--tgr-blue), #64B5F6); }
+        .btn-copy:hover { box-shadow: 0 8px 25px rgba(66, 165, 245, 0.3); }
+        .btn-copy:disabled { background: #555; color: #999; cursor: default; opacity: 0.8; }
+        .btn-copy:disabled::before { opacity: 0.2; }
+
+        /* --- Output Area --- */
+        #output {
+            background-color: var(--output-bg);
+            color: var(--output-text);
+            padding: 30px;
+            border-radius: 12px;
+            font-family: 'Cascadia Code', 'Fira Code', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 1rem;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            border: 1px solid var(--output-border);
+            margin-top: 15px;
+            min-height: 200px;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, max-height 0.7s ease-out, padding 0.6s ease, margin 0.6s ease;
+            overflow-y: auto;
+            max-height: 550px;
+            opacity: 0; /* Start hidden */
+            transform: translateY(20px); /* Start slightly lower */
+            line-height: 1.65;
+        }
+        #output.outputVisible { opacity: 1; transform: translateY(0); }
+        #output.outputHidden { opacity: 0; max-height: 0; min-height: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; margin-top: 0; transform: translateY(20px); }
+
+        /* --- Pulsing Animation for Success --- */
+        .pulse-success { animation: pulse-success-animation 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse-success-animation {
+            0%, 100% { color: var(--success-color); transform: scale(1); }
+            50% { color: #81C784; transform: scale(1.05); }
+        }
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .footer a:hover {
+            color: var(--primary-color);
+            text-shadow: 0 0 5px rgba(239, 83, 80, 0.5);
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+            margin: 40px 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .container { width: 95%; padding: 35px 30px; }
+            .business-name { font-size: 0.9rem; letter-spacing: 1px;}
+            h1.main-title { font-size: 2.1rem; }
+            h2.output-title { font-size: 1.5rem; }
+            .button-group { flex-direction: column; gap: 15px; }
+            .btn { width: 100%; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 20px 0; }
+            .container { padding: 30px 20px; border-radius: 15px; }
+            .business-name { font-size: 0.85rem; }
+            h1.main-title { font-size: 1.9rem; }
+            h2.output-title { font-size: 1.4rem; }
+            .form-control, .form-select, .btn { font-size: 0.95rem; padding: 14px 18px;}
+            #output { font-size: 0.9rem; padding: 25px;}
+        }
+
+    </style>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PC9CR6XD');</script>
+    <!-- End Google Tag Manager -->
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC9CR6XD"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <!-- Added Business Name Here -->
+        <p class="business-name">Dammie Optimus Solution</p>
+
+        <!-- Updated Main Title Here -->
+        <h1 class="main-title">TGR EPIN Formatter</h1>
+
+        <div class="form-group">
+            <label for="txtCompanyName" class="form-label">Company Name / Advert / Dashes</label>
+            <input type="text" class="form-control" id="txtCompanyName" placeholder="e.g. MyCompany | Optional Advert | 40">
+            <div class="form-text">Enter Company Name. Optionally add "| Advert Text" and "| NumberOfDashes".</div>
+        </div>
+
+        <div class="form-group">
+            <label for="lstNetworkAndAmount" class="form-label">Network and Amount</label>
+            <select class="form-select" id="lstNetworkAndAmount" aria-label="Select Network and Amount">
+                <option selected disabled value="">-- Select Network & Amount --</option>
+                <option value="A|100">AIRTEL ₦100</option>
+                <option value="A|200">AIRTEL ₦200</option>
+                <option value="A|500">AIRTEL ₦500</option>
+                <option value="M|100">MTN ₦100</option>
+                <option value="M|200">MTN ₦200</option>
+                <option value="M|500">MTN ₦500</option>
+                <option value="G|100">GLO ₦100</option>
+                <option value="G|200">GLO ₦200</option>
+                <option value="G|500">GLO ₦500</option>
+                <option value="N|100">9MOBILE ₦100</option>
+                <option value="N|200">9MOBILE ₦200</option>
+                <option value="N|500">9MOBILE ₦500</option>
+                <option value="E|100">ETISALAT ₦100 (Legacy)</option>
+                <option value="E|200">ETISALAT ₦200 (Legacy)</option>
+                <option value="E|500">ETISALAT ₦500 (Legacy)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="txtEpinDetails" class="form-label">EPIN Text (Paste Here)</label>
+            <textarea class="form-control" id="txtEpinDetails" rows="6" placeholder="Paste your raw EPIN text here, like: 1234... Airtel 9876... Airtel"></textarea>
+            <div id="epinTextHelp" class="form-text">
+                Ensure the network name (e.g., AIRTEL, MTN, GLO, 9MOBILE) follows each PIN.
+            </div>
+        </div>
+
+        <!-- Button Group -->
+        <div class="button-group">
+            <button type="button" class="btn btn-format" id="btnFormatEpins" onclick="formatEpins()">Format EPINs</button>
+            <button type="button" class="btn btn-copy" id="btnCopyOutputContent" onclick="copyOutputContent()">Copy Output</button>
+        </div>
+
+        <hr />
+
+        <h2 id="outputHeader" class="output-title">Output</h2>
+        <pre id="output" class="outputHidden"></pre>
+
+    </div>
+
+    <footer class="footer">
+         © <span id="footerYear"></span> <a href="#" target="_blank" rel="noopener noreferrer">Dammie Optimus Solutions Ltd.</a> All Rights Reserved.
+    </footer>
+
+    <script>
+        // --- START OF JavaScript Logic (No changes needed here for this request) ---
+
+        const networkProviderDic = { "A": "AIRTEL", "N": "9MOBILE", "9": "9MOBILE", "E": "ETISALAT", "M": "MTN", "G": "GLO" };
+        const loadCodeForProviderDic = { "A": "*311*PIN#", "N": "*311*PIN#", "9": "*311*PIN#", "E": "*311*PIN#", "M": "*311*PIN#", "G": "*203*3*PIN#" };
+
+        function getWords(text) { if (!text) return []; return text.toUpperCase().match(/[a-zA-Z0-9]+/g) || []; }
+
+        function formatEpins() {
+            const companyNameElem = document.getElementById('txtCompanyName');
+            const epinListStringElem = document.getElementById('txtEpinDetails');
+            const networkAndAmountElem = document.getElementById('lstNetworkAndAmount');
+            const outputElem = document.getElementById("output");
+            const outputHeaderElem = document.getElementById("outputHeader");
+            const formatButton = document.getElementById('btnFormatEpins');
+            const copyButton = document.getElementById('btnCopyOutputContent');
+
+            if (!companyNameElem.value.trim()) { alert("Please enter a Company Name."); companyNameElem.focus(); return; }
+            if (!networkAndAmountElem.value) { alert("Please select a Network and Amount."); networkAndAmountElem.focus(); return; }
+            if (!epinListStringElem.value.trim()) { alert("Please paste the EPIN text."); epinListStringElem.focus(); return; }
+
+            outputHeaderElem.classList.remove('pulse-success');
+            outputElem.classList.remove("outputVisible");
+            outputElem.classList.add("outputHidden");
+            outputHeaderElem.style.color = 'var(--secondary-color)';
+
+            let numberOfDashes = 40, companyName = "", advertText = "";
+            const companyInput = companyNameElem.value.trim();
+            const parts = companyInput.split("|").map(part => part.trim());
+            companyName = parts[0] || "";
+            if (parts.length === 2) {
+                if (!isNaN(parseInt(parts[1])) && parseInt(parts[1]) > 0) numberOfDashes = parseInt(parts[1]);
+                else if (parts[1]) advertText = parts[1];
+            } else if (parts.length >= 3) {
+                if (parts[1]) advertText = parts[1];
+                if (!isNaN(parseInt(parts[2])) && parseInt(parts[2]) > 0) numberOfDashes = parseInt(parts[2]);
+            }
+            if (isNaN(numberOfDashes) || numberOfDashes < 10 || numberOfDashes > 100) {
+                numberOfDashes = 40; console.warn("Invalid number of dashes, reset to 40.");
+            }
+
+            const epinLongText = epinListStringElem.value;
+            const [networkCode, cardAmount] = networkAndAmountElem.value.split("|");
+            const selectedNetworkName = networkProviderDic[networkCode];
+            const allWordsList = getWords(epinLongText);
+            const epinList = [];
+            for (let i = 0; i < allWordsList.length; i++) {
+                if (i + 1 < allWordsList.length && allWordsList[i + 1] === selectedNetworkName && /^\d{15,17}$/.test(allWordsList[i])) {
+                    epinList.push(allWordsList[i]); i++;
+                }
+            }
+
+            if (epinList.length === 0) {
+                outputElem.innerHTML = `ERROR:\nNo valid ${selectedNetworkName} EPINs found (15-17 digits expected before network name).\n\nPlease check:\n1. Correct Network/Amount selected.\n2. EPIN text format: 'PIN ${selectedNetworkName} PIN ${selectedNetworkName} ...'.\n3. PINs are numbers only.`;
+                outputHeaderElem.innerHTML = "Extraction Error";
+                outputHeaderElem.style.color = 'var(--error-color)';
+                formatButton.disabled = false;
+                outputElem.classList.remove("outputHidden");
+                outputElem.classList.add("outputVisible");
+                outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
+            }
+
+            let epinFinalString = "";
+            const futureDate = new Date(Date.now() + 6 * 24 * 60 * 60 * 1000);
+            const formattedDate = futureDate.toLocaleString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+            for (let index = 0; index < epinList.length; index++) {
+                const currentEpin = epinList[index];
+                const epinWithDashes = currentEpin.match(/.{1,4}/g)?.join('-') || currentEpin;
+                epinFinalString += `${companyName.toUpperCase()}\n`;
+                epinFinalString += `${selectedNetworkName} ₦${cardAmount}\n`;
+                epinFinalString += `PIN: ${epinWithDashes}\n`;
+                epinFinalString += `HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}\n`;
+                if (networkCode === "G") {
+                    epinFinalString += `e.g. *203*3*${currentEpin}#\n`;
+                    epinFinalString += `USE BEFORE ${formattedDate}\n`;
+                }
+                if (advertText) epinFinalString += `${advertText.toUpperCase()}\n`;
+                if (index < epinList.length - 1) epinFinalString += "-".repeat(numberOfDashes) + "\n";
+            }
+
+            outputElem.innerHTML = epinFinalString.trim();
+            outputHeaderElem.innerHTML = `Formatted ${epinList.length} EPIN(s) - Ready to Copy!`;
+            formatButton.disabled = true;
+            copyButton.disabled = false;
+
+            outputElem.classList.remove("outputHidden");
+            requestAnimationFrame(() => { requestAnimationFrame(() => { outputElem.classList.add("outputVisible"); }); });
+            outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function copyOutputContent() {
+            const output = document.getElementById("output");
+            const outputHeaderElem = document.getElementById("outputHeader");
+            const copyButton = document.getElementById('btnCopyOutputContent');
+            const formatButton = document.getElementById('btnFormatEpins');
+
+            if (!output.textContent || !output.classList.contains("outputVisible")) { console.warn("No visible output content to copy."); return; }
+
+            navigator.clipboard.writeText(output.textContent)
+                .then(() => {
+                    outputHeaderElem.innerHTML = "Output Copied Successfully!";
+                    outputHeaderElem.style.color = 'var(--success-color)';
+                    outputHeaderElem.classList.add('pulse-success');
+                    const originalButtonText = copyButton.textContent;
+                    copyButton.textContent = "Copied ✓";
+                    copyButton.disabled = true;
+                    document.getElementById('txtCompanyName').value = "";
+                    document.getElementById('lstNetworkAndAmount').selectedIndex = 0;
+                    document.getElementById('txtEpinDetails').value = "";
+                    formatButton.disabled = false;
+                    setTimeout(() => { output.classList.remove("outputVisible"); output.classList.add("outputHidden"); }, 2500);
+                    setTimeout(() => {
+                        outputHeaderElem.innerHTML = 'Output';
+                        outputHeaderElem.style.color = 'var(--secondary-color)';
+                        outputHeaderElem.classList.remove('pulse-success');
+                        copyButton.textContent = originalButtonText;
+                    }, 5000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    outputHeaderElem.innerHTML = "Copy Failed! Please Copy Manually.";
+                    outputHeaderElem.style.color = 'var(--error-color)';
+                    outputHeaderElem.classList.remove('pulse-success');
+                });
+        }
+
+        document.getElementById("footerYear").innerHTML = new Date().getFullYear();
+        document.getElementById('btnCopyOutputContent').disabled = true;
+
+        // --- END OF JavaScript Logic ---
+    </script>
+</body>
+</html>
