@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- html2canvas Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
@@ -39,8 +39,8 @@
             --error-color: var(--tgr-red);
             /* Visual Card Specifics */
             --visual-card-bg: #ffffff;
-            --visual-card-text: #212121;
-            --visual-card-border: #e0e0e0;
+            --visual-card-text: #111111; /* Darker black for sharpness */
+            --visual-card-border: #cccccc; /* More visible separator */
         }
         /* ... (Keep all existing base, body, container, typography, form, button, output, footer, hr, responsive styles from previous version) ... */
 
@@ -146,85 +146,83 @@
         .footer a:hover { color: var(--primary-color); text-shadow: 0 0 5px rgba(239, 83, 80, 0.5); }
         hr { border: none; height: 1px; background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 40px 0; }
 
-        /* --- NEW Styles for Visual EPIN Cards --- */
+        /* --- UPDATED Styles for Visual EPIN Cards --- */
         #visualOutputContainer {
             margin-top: 20px;
             background-color: var(--visual-card-bg); /* White background for the image capture area */
-            padding: 10px; /* Padding around all cards if needed for capture */
-            border-radius: 8px; /* Optional rounding for the container itself */
+            padding: 15px; /* Padding around all cards for capture */
+            border-radius: 8px;
             display: none; /* Hidden by default, shown by JS */
+            max-width: 450px; /* Constrain width of the entire visual block */
+            margin-left: auto; /* Center the block if parent is wider */
+            margin-right: auto;
         }
         .epin-visual-card {
-            background-color: var(--visual-card-bg);
             color: var(--visual-card-text);
-            padding: 15px;
-            font-family: Arial, sans-serif; /* Use a common font for image rendering consistency */
-            font-size: 13px; /* Adjust for density */
-            line-height: 1.5;
-            border-bottom: 1px dashed #ccc; /* Separator between cards */
-            margin-bottom: 10px;
-            display: flex; /* For side-by-side logo and text */
-            align-items: flex-start; /* Align items to the top */
-            position: relative; /* For absolute positioning if needed */
+            /* Use a clear sans-serif font, Roboto is good for print/sharpness */
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 12px; /* Base size for visual card */
+            line-height: 1.4; /* Tighter line height for density */
+            border-bottom: 2px dashed var(--visual-card-border); /* More visible separator */
+            padding-bottom: 8px; /* Space above separator */
+            margin-bottom: 8px; /* Space below separator, before next card */
+            position: relative; /* For absolute positioning of logo */
+            padding-right: 70px; /* Space on the right for the logo */
+            min-height: 60px; /* Ensure enough height for logo */
         }
         .epin-visual-card:last-child {
             border-bottom: none;
             margin-bottom: 0;
-        }
-        .epin-visual-card .details {
-            flex-grow: 1; /* Text details take remaining space */
+            padding-bottom: 0;
         }
         .epin-visual-card .logo-container {
-            width: 80px; /* Adjust as needed */
-            margin-left: 15px; /* Space between text and logo */
-            text-align: right;
+            position: absolute;
+            top: 5px; /* Adjust vertical position of logo */
+            right: 0px; /* Align to the far right of the card's padding */
+            width: 60px; /* Max width of logo */
+            height: auto;
         }
         .epin-visual-card .logo-container img {
             max-width: 100%;
-            height: auto;
-            max-height: 40px; /* Control logo height */
+            max-height: 35px; /* Control logo height */
+            display: block; /* Remove extra space below img */
         }
         .epin-visual-card .company-name-visual {
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 3px;
+            font-weight: 700; /* Bolder */
+            font-size: 13px; /* Slightly larger */
+            margin-bottom: 2px;
         }
         .epin-visual-card .network-amount-visual {
-            font-size: 13px;
-            margin-bottom: 5px;
+            font-weight: 500; /* Medium weight */
+            font-size: 12px;
+            margin-bottom: 4px;
         }
         .epin-visual-card .pin-visual,
         .epin-visual-card .load-info-visual,
         .epin-visual-card .advert-visual,
         .epin-visual-card .extra-info-visual {
-            font-size: 12px;
-            margin-bottom: 3px;
-            word-break: break-all; /* Ensure long PINs wrap */
+            font-weight: 500; /* Medium weight for better sharpness */
+            font-size: 11px; /* Adjust for density if needed */
+            margin-bottom: 2px;
+            word-break: break-all;
         }
         .epin-visual-card .pin-visual span { /* For "PIN:" label */
-            font-weight: bold;
+            font-weight: 700; /* Bolder */
         }
 
         /* Responsive adjustments (existing) */
-        @media (max-width: 768px) {
-            .container { width: 95%; padding: 35px 30px; }
-            .business-name { font-size: 0.9rem; letter-spacing: 1px;}
-            h1.main-title { font-size: 2.1rem; }
-            h2.output-title { font-size: 1.5rem; }
-            .button-group { flex-direction: column; gap: 15px; }
-            .btn { width: 100%; }
-        }
+        @media (max-width: 768px) { /* ... keep existing ... */ }
         @media (max-width: 480px) {
-            body { padding: 20px 0; }
-            .container { padding: 30px 20px; border-radius: 15px; }
-            .business-name { font-size: 0.85rem; }
-            h1.main-title { font-size: 1.9rem; }
-            h2.output-title { font-size: 1.4rem; }
-            .form-control, .form-select, .btn { font-size: 0.95rem; padding: 14px 18px;}
-            #output { font-size: 0.9rem; padding: 25px;}
-            .epin-visual-card { font-size: 11px; padding: 10px; } /* Adjust visual card for small screens */
-            .epin-visual-card .company-name-visual { font-size: 12px; }
-            .epin-visual-card .logo-container { width: 60px; }
+             /* ... keep existing ... */
+            #visualOutputContainer { max-width: 100%; padding: 10px; } /* Full width on small screens */
+            .epin-visual-card { font-size: 10px; padding-right: 55px; min-height: 50px; }
+            .epin-visual-card .company-name-visual { font-size: 11px; }
+            .epin-visual-card .logo-container { width: 50px; top: 3px;}
+            .epin-visual-card .logo-container img { max-height: 30px;}
+            .epin-visual-card .pin-visual,
+            .epin-visual-card .load-info-visual,
+            .epin-visual-card .advert-visual,
+            .epin-visual-card .extra-info-visual { font-size: 10px; }
         }
 
     </style>
@@ -236,6 +234,7 @@
         <p class="business-name">Dammie Optimus Solution</p>
         <h1 class="main-title">TGR EPIN Formatter</h1>
 
+        <!-- ... (rest of the HTML for form and buttons remains the same as your previous version) ... -->
         <div class="form-group">
             <label for="txtCompanyName" class="form-label">Company Name / Advert / Dashes</label>
             <input type="text" class="form-control" id="txtCompanyName" placeholder="e.g. MyCompany | Optional Advert | 40">
@@ -263,7 +262,6 @@
         <div class="button-group">
             <button type="button" class="btn btn-format" id="btnFormatEpins" onclick="formatEpins()">Format EPINs</button>
             <button type="button" class="btn btn-copy" id="btnCopyOutputContent" onclick="copyOutputContent()">Copy Text</button>
-            <!-- New Download Button -->
             <button type="button" class="btn btn-download-visual" id="btnDownloadVisual" onclick="downloadVisualOutput()">Download Visuals</button>
         </div>
 
@@ -272,30 +270,24 @@
         <h2 id="outputHeader" class="output-title">Text Output</h2>
         <pre id="output" class="outputHidden"></pre>
 
-        <!-- New Visual Output Area -->
         <h2 id="visualOutputHeader" class="output-title" style="display:none;">Visual Output (for Download)</h2>
         <div id="visualOutputContainer" class="outputHidden">
             <!-- Visual EPIN cards will be injected here by JavaScript -->
         </div>
-
     </div>
 
     <footer class="footer">
-         &copy; <span id="footerYear"></span> <a href="#" target="_blank" rel="noopener noreferrer">Dammie Optimus Solutions Ltd.</a> All Rights Reserved.
+         © <span id="footerYear"></span> <a href="#" target="_blank" rel="noopener noreferrer">Dammie Optimus Solutions Ltd.</a> All Rights Reserved.
     </footer>
 
     <script>
+        // --- JavaScript (Logic for formatEpins visual card generation updated) ---
         const networkProviderDic = { "A": "AIRTEL", "N": "9MOBILE", "9": "9MOBILE", "E": "ETISALAT", "M": "MTN", "G": "GLO" };
         const loadCodeForProviderDic = { "A": "*311*PIN#", "N": "*311*PIN#", "9": "*311*PIN#", "E": "*311*PIN#", "M": "*311*PIN#", "G": "*203*3*PIN#" };
-
-        // IMPORTANT: Update these paths if your logos are located elsewhere or named differently.
-        // They should be in a 'logos' folder relative to your index.html
         const networkLogos = {
-            "A": "logos/airtel-logo.png", // Assuming airtel.png from your first image
-            "M": "logos/mtn-logo.png",   // Assuming mtn.png from your second image
-            "G": "logos/glo-logo.png",     // Assuming glo.png from your fourth image
-            "N": "logos/9mobile-logo.png", // Assuming 9mobile.png from your third image
-            "E": "logos/9mobile-logo.png"  // Etisalat (Legacy) can use 9mobile logo or a generic one
+            "A": "logos/airtel-logo.png", "M": "logos/mtn-logo.png",
+            "G": "logos/glo-logo.png", "N": "logos/9mobile-logo.png",
+            "E": "logos/9mobile-logo.png"
         };
 
         function getWords(text) { if (!text) return []; return text.toUpperCase().match(/[a-zA-Z0-9]+/g) || []; }
@@ -316,14 +308,11 @@
             if (!networkAndAmountElem.value) { alert("Please select a Network and Amount."); networkAndAmountElem.focus(); return; }
             if (!epinListStringElem.value.trim()) { alert("Please paste the EPIN text."); epinListStringElem.focus(); return; }
 
-            // Resetting outputs
             outputHeaderElem.classList.remove('pulse-success');
             outputElem.classList.remove("outputVisible"); outputElem.classList.add("outputHidden");
-            visualOutputContainer.innerHTML = ''; // Clear previous visual cards
-            visualOutputContainer.style.display = 'none'; // Hide visual container
-            visualOutputHeader.style.display = 'none'; // Hide visual header
-            outputHeaderElem.style.color = 'var(--secondary-color)';
-            outputHeaderElem.innerHTML = 'Text Output'; // Reset header
+            visualOutputContainer.innerHTML = ''; visualOutputContainer.style.display = 'none';
+            visualOutputHeader.style.display = 'none'; outputHeaderElem.style.color = 'var(--secondary-color)';
+            outputHeaderElem.innerHTML = 'Text Output';
 
             let numberOfDashes = 40, companyName = "", advertText = "";
             const companyInput = companyNameElem.value.trim();
@@ -351,7 +340,7 @@
                 }
             }
 
-            if (epinList.length === 0) {
+            if (epinList.length === 0) { /* ... error handling same as before ... */
                 const errorMsg = `ERROR:\nNo valid ${selectedNetworkName} EPINs found (15-17 digits expected before network name).\n\nPlease check:\n1. Correct Network/Amount selected.\n2. EPIN text format: 'PIN ${selectedNetworkName} PIN ${selectedNetworkName} ...'.\n3. PINs are numbers only.`;
                 outputElem.innerHTML = errorMsg;
                 outputHeaderElem.innerHTML = "Extraction Error";
@@ -360,9 +349,10 @@
                 outputElem.classList.remove("outputHidden");
                 requestAnimationFrame(() => requestAnimationFrame(() => outputElem.classList.add("outputVisible")));
                 outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                downloadVisualButton.disabled = true; // Disable download if error
+                downloadVisualButton.disabled = true;
                 return;
             }
+
 
             let epinFinalString = "";
             const futureDate = new Date(Date.now() + 6 * 24 * 60 * 60 * 1000);
@@ -375,32 +365,39 @@
                 textCard += `PIN: ${epinWithDashes}\n`;
                 textCard += `HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}\n`;
 
-                // --- Create Visual Card ---
+                // --- UPDATED Visual Card Generation ---
                 const visualCard = document.createElement('div');
                 visualCard.className = 'epin-visual-card';
 
-                let visualDetailsHTML = `<div class="details">`;
-                visualDetailsHTML += `<div class="company-name-visual">${companyName.toUpperCase()}</div>`;
-                visualDetailsHTML += `<div class="network-amount-visual">${selectedNetworkName} ₦${cardAmount}</div>`;
-                visualDetailsHTML += `<div class="pin-visual"><span>PIN:</span> ${epinWithDashes}</div>`;
-                visualDetailsHTML += `<div class="load-info-visual">HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}</div>`;
+                // Logo Container
+                const logoContainer = document.createElement('div');
+                logoContainer.className = 'logo-container';
+                const logoImg = document.createElement('img');
+                logoImg.src = networkLogos[networkCode] || 'logos/default-logo.png';
+                logoImg.alt = `${selectedNetworkName} Logo`;
+                logoContainer.appendChild(logoImg);
+                visualCard.appendChild(logoContainer); // Add logo first or last based on desired float/position
+
+                // Details Container
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'details'; // If you need to style details separately from logo
+
+                detailsDiv.innerHTML += `<div class="company-name-visual">${companyName.toUpperCase()}</div>`;
+                detailsDiv.innerHTML += `<div class="network-amount-visual">${selectedNetworkName} ₦${cardAmount}</div>`;
+                detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span> ${epinWithDashes}</div>`;
+                detailsDiv.innerHTML += `<div class="load-info-visual">HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}</div>`;
 
                 if (networkCode === "G") {
                     const gloExtraText = `e.g. *203*3*${currentEpin}#\nUSE BEFORE ${formattedDate}`;
                     textCard += gloExtraText + '\n';
-                    visualDetailsHTML += `<div class="extra-info-visual">e.g. *203*3*${currentEpin}#</div>`;
-                    visualDetailsHTML += `<div class="extra-info-visual">USE BEFORE ${formattedDate}</div>`;
+                    detailsDiv.innerHTML += `<div class="extra-info-visual">e.g. *203*3*${currentEpin}#</div>`;
+                    detailsDiv.innerHTML += `<div class="extra-info-visual">USE BEFORE ${formattedDate}</div>`;
                 }
                 if (advertText) {
                     textCard += `${advertText.toUpperCase()}\n`;
-                    visualDetailsHTML += `<div class="advert-visual">${advertText.toUpperCase()}</div>`;
+                    detailsDiv.innerHTML += `<div class="advert-visual">${advertText.toUpperCase()}</div>`;
                 }
-                 visualDetailsHTML += `</div>`; // Close details div
-
-                const logoSrc = networkLogos[networkCode] || 'logos/default-logo.png'; // Fallback logo
-                visualDetailsHTML += `<div class="logo-container"><img src="${logoSrc}" alt="${selectedNetworkName} Logo"></div>`;
-
-                visualCard.innerHTML = visualDetailsHTML;
+                visualCard.appendChild(detailsDiv); // Add details
                 visualOutputContainer.appendChild(visualCard);
                 // --- End Visual Card ---
 
@@ -413,26 +410,17 @@
             outputElem.innerHTML = epinFinalString.trim();
             outputHeaderElem.innerHTML = `Text Output: ${epinList.length} EPIN(s) Formatted`;
             visualOutputHeader.innerHTML = `Visual Output: ${epinList.length} EPIN(s) Formatted`;
-
-            formatButton.disabled = true;
-            copyButton.disabled = false;
-            downloadVisualButton.disabled = false;
-
+            formatButton.disabled = true; copyButton.disabled = false; downloadVisualButton.disabled = false;
             outputElem.classList.remove("outputHidden");
             requestAnimationFrame(() => requestAnimationFrame(() => outputElem.classList.add("outputVisible")));
-
-            visualOutputContainer.style.display = 'block'; // Show visual container
-            visualOutputHeader.style.display = 'block'; // Show visual header
-
-            // Scroll to text output primarily
+            visualOutputContainer.style.display = 'block'; visualOutputHeader.style.display = 'block';
             outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        function copyOutputContent() {
+        function copyOutputContent() { /* ... same as before ... */
             const output = document.getElementById("output");
             const outputHeaderElem = document.getElementById("outputHeader");
             const copyButton = document.getElementById('btnCopyOutputContent');
-            const formatButton = document.getElementById('btnFormatEpins');
 
             if (!output.textContent || !output.classList.contains("outputVisible")) { console.warn("No visible text output to copy."); return; }
 
@@ -443,14 +431,6 @@
                     outputHeaderElem.classList.add('pulse-success');
                     const originalButtonText = copyButton.textContent;
                     copyButton.textContent = "Text Copied ✓";
-                    // copyButton.disabled = true; // Keep enabled if user wants to copy again
-
-                    // Don't clear form automatically after text copy if visual download is pending
-                    // document.getElementById('txtCompanyName').value = "";
-                    // document.getElementById('lstNetworkAndAmount').selectedIndex = 0;
-                    // document.getElementById('txtEpinDetails').value = "";
-                    // formatButton.disabled = false;
-
                     setTimeout(() => {
                         outputHeaderElem.innerHTML = 'Text Output';
                         outputHeaderElem.style.color = 'var(--secondary-color)';
@@ -466,7 +446,8 @@
                 });
         }
 
-        function downloadVisualOutput() {
+
+        function downloadVisualOutput() { /* ... same as before ... */
             const visualContainer = document.getElementById('visualOutputContainer');
             const downloadButton = document.getElementById('btnDownloadVisual');
             const originalButtonText = downloadButton.textContent;
@@ -479,14 +460,11 @@
             downloadButton.textContent = "Generating...";
 
             const options = {
-                backgroundColor: getComputedStyle(visualContainer).backgroundColor || "#ffffff", // Use actual bg or fallback
-                scale: window.devicePixelRatio * 1.5, // Increase scale for better resolution, adjust as needed
-                useCORS: true, // If logos are from external sources (not usually needed for local files)
-                logging: true, // For debugging html2canvas
-                onclone: (document) => { // Ensure styles are applied if they rely on external CSS not in <style>
-                    // If you had external stylesheets, you'd re-link them here in the cloned document.
-                    // For inline styles or <style> block, this is often not needed.
-                }
+                backgroundColor: getComputedStyle(visualContainer).backgroundColor || "#ffffff",
+                scale: window.devicePixelRatio * 2, // Increased scale for even better resolution
+                useCORS: true,
+                logging: false, // Disable extensive logging unless debugging
+                onclone: (document) => { }
             };
 
             html2canvas(visualContainer, options).then(canvas => {
@@ -497,21 +475,18 @@
                 downloadButton.disabled = false;
                 downloadButton.textContent = originalButtonText;
 
-                // Optionally clear form after successful download of visuals
                 document.getElementById('txtCompanyName').value = "";
                 document.getElementById('lstNetworkAndAmount').selectedIndex = 0;
                 document.getElementById('txtEpinDetails').value = "";
-                document.getElementById('btnFormatEpins').disabled = false; // Re-enable format
-                document.getElementById('btnCopyOutputContent').disabled = true; // Disable text copy
-                downloadButton.disabled = true; // Disable download until next format
+                document.getElementById('btnFormatEpins').disabled = false;
+                document.getElementById('btnCopyOutputContent').disabled = true;
+                downloadButton.disabled = true;
 
-                // Hide outputs
                 document.getElementById("output").classList.remove("outputVisible");
                 document.getElementById("output").classList.add("outputHidden");
                 visualContainer.style.display = 'none';
                 document.getElementById("visualOutputHeader").style.display = 'none';
                 document.getElementById("outputHeader").innerHTML = 'Text Output';
-
 
             }).catch(err => {
                 console.error("Error generating image with html2canvas:", err);
@@ -525,7 +500,6 @@
         document.getElementById("footerYear").innerHTML = new Date().getFullYear();
         document.getElementById('btnCopyOutputContent').disabled = true;
         document.getElementById('btnDownloadVisual').disabled = true;
-
     </script>
 </body>
 </html>
