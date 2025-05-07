@@ -21,7 +21,7 @@
             --glow-color: rgba(66, 165, 245, 0.2); --success-color: #66BB6A;
             --error-color: var(--tgr-red); --visual-card-bg: #ffffff;
             --visual-card-text: #000000;
-            --visual-card-border: #999999; /* Darker separator for visibility */
+            --visual-card-border: #999999;
         }
         /* ... (Keep all existing base, body, container, typography, form, button, output, footer, hr, responsive styles from previous version, EXCEPT the .epin-visual-card related ones below) ... */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -127,15 +127,14 @@
         hr { border: none; height: 1px; background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 40px 0; }
 
 
-        /* --- MAX IMPACT Visual EPIN Cards --- */
+        /* --- EVEN BIGGER & TIGHTER Visual EPIN Cards --- */
         #visualOutputContainer {
             margin-top: 20px;
             background-color: var(--visual-card-bg);
-            padding: 8px 10px; /* Minimal padding for the container */
-            border-radius: 6px;
+            padding: 5px 8px; /* Minimal padding for the container */
+            border-radius: 5px;
             display: none;
-            /* width: fit-content; /* Let container shrink to content */
-            /* max-width: 500px;  You might still want a max-width for very long company names */
+            width: fit-content; /* Crucial for no excess right space */
             margin-left: auto;
             margin-right: auto;
         }
@@ -145,8 +144,8 @@
             color: var(--visual-card-text);
             font-family: 'Roboto', Arial, sans-serif;
             border-bottom: 2px dashed var(--visual-card-border);
-            padding-bottom: 4px; /* Minimal */
-            margin-bottom: 4px;  /* Minimal */
+            padding-bottom: 2px; /* Minimal */
+            margin-bottom: 2px;  /* Minimal */
         }
         .epin-visual-card:last-child {
             border-bottom: none;
@@ -154,69 +153,68 @@
             padding-bottom: 0;
         }
         .epin-visual-card .logo-container {
-            width: 95px;  /* LARGER logo container */
-            margin-right: 3px; /* VERY small space */
+            width: 100px;  /* BIGGER logo container */
+            margin-right: 2px; /* ALMOST TOUCHING space */
             flex-shrink: 0;
+            display: flex; /* To center image within container if needed */
+            align-items: center;
+            justify-content: center;
         }
         .epin-visual-card .logo-container img {
             max-width: 100%;
             height: auto;
-            max-height: 70px; /* LARGER logo */
+            max-height: 75px; /* BIGGER logo */
             display: block;
         }
         .epin-visual-card .details {
             flex-grow: 1;
-            line-height: 1.2; /* VERY condensed line height */
+            line-height: 1.15; /* EXTREMELY condensed line height */
         }
         .epin-visual-card .company-name-visual {
             font-weight: 700;
-            font-size: 20px; /* BIGGER */
-            margin-bottom: 0px; /* Condensed */
+            font-size: 24px; /* MUCH BIGGER */
+            margin-bottom: 0;
         }
         .epin-visual-card .network-amount-visual {
             font-weight: 500;
-            font-size: 18px; /* BIGGER */
-            margin-bottom: 1px; /* Condensed */
+            font-size: 22px; /* MUCH BIGGER */
+            margin-bottom: 0;
         }
-        .epin-visual-card .pin-visual { /* PIN specific styling */
-            font-weight: 900; /* Heaviest weight for PIN */
-            font-size: 26px; /* MUCH BIGGER PIN */
-            margin-top: 1px; /* Slight space before PIN */
-            margin-bottom: 2px; /* Condensed */
-            letter-spacing: 0.5px; /* Optional: slight letter spacing for readability */
+        .epin-visual-card .pin-visual {
+            font-weight: 900;
+            font-size: 26px; /* Kept same as last round, per request */
+            margin-top: 1px;
+            margin-bottom: 1px;
+            letter-spacing: 0.5px;
             word-break: break-all;
         }
-        .epin-visual-card .pin-visual span { /* "PIN:" label */
+        .epin-visual-card .pin-visual span {
             font-weight: 700;
-            font-size: 18px; /* Match other text, or slightly smaller than PIN number */
+            font-size: 22px; /* Adjusted to match other text */
             margin-right: 4px;
         }
         .epin-visual-card .load-info-visual,
         .epin-visual-card .advert-visual,
         .epin-visual-card .extra-info-visual {
             font-weight: 500;
-            font-size: 17px; /* BIGGER */
-            margin-bottom: 0px; /* Condensed */
+            font-size: 20px; /* MUCH BIGGER */
+            margin-bottom: 0;
             word-break: break-all;
         }
 
 
         @media (max-width: 480px) {
-            #visualOutputContainer { max-width: 100%; padding: 5px; }
-            .epin-visual-card {
-                /* Consider stacking earlier if horizontal space is an issue */
-                /* flex-direction: column; align-items: flex-start; */
-            }
-            .epin-visual-card .logo-container { margin-right: 2px; width: 80px; }
-            .epin-visual-card .logo-container img { max-height: 60px;}
+            #visualOutputContainer { max-width: 100%; padding: 4px; }
+            .epin-visual-card .logo-container { margin-right: 1px; width: 85px; }
+            .epin-visual-card .logo-container img { max-height: 65px;}
 
-            .epin-visual-card .company-name-visual { font-size: 18px; }
-            .epin-visual-card .network-amount-visual { font-size: 16px; }
-            .epin-visual-card .pin-visual { font-size: 22px; }
-            .epin-visual-card .pin-visual span { font-size: 16px;}
+            .epin-visual-card .company-name-visual { font-size: 20px; }
+            .epin-visual-card .network-amount-visual { font-size: 19px; }
+            /* PIN size remains from previous settings for mobile for now */
+            .epin-visual-card .pin-visual span { font-size: 19px;}
             .epin-visual-card .load-info-visual,
             .epin-visual-card .advert-visual,
-            .epin-visual-card .extra-info-visual { font-size: 15px; }
+            .epin-visual-card .extra-info-visual { font-size: 18px; }
         }
 
     </style>
@@ -372,7 +370,7 @@
                 detailsDiv.className = 'details';
                 detailsDiv.innerHTML += `<div class="company-name-visual">${companyName.toUpperCase()}</div>`;
                 detailsDiv.innerHTML += `<div class="network-amount-visual">${selectedNetworkName} ₦${cardAmount}</div>`;
-                detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span> ${epinWithDashes}</div>`; // The actual PIN value is here
+                detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span> ${epinWithDashes}</div>`;
                 detailsDiv.innerHTML += `<div class="load-info-visual">HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}</div>`;
 
                 if (networkCode === "G") {
@@ -433,7 +431,7 @@
                 });
         }
 
-        function downloadVisualOutput() { /* ... same as before, but maybe increase scale further ... */
+        function downloadVisualOutput() { /* ... same as before ... */
             const visualContainer = document.getElementById('visualOutputContainer');
             const downloadButton = document.getElementById('btnDownloadVisual');
             const originalButtonText = downloadButton.textContent;
@@ -447,7 +445,7 @@
 
             const options = {
                 backgroundColor: getComputedStyle(visualContainer).backgroundColor || "#ffffff",
-                scale: window.devicePixelRatio * 3, // MAXIMIZE scale for print quality
+                scale: window.devicePixelRatio * 3, // Max scale
                 useCORS: true,
                 logging: false,
                 onclone: (document) => { }
