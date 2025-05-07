@@ -4,46 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>TGR EPIN Formatter - Dark Mode with Visuals</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- html2canvas Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-        /* --- Dark Mode Delight Theme (Existing Styles) --- */
-        :root {
-            --tgr-red: #EF5350;
-            --tgr-blue: #42A5F5;
-            --primary-color: var(--tgr-red);
-            --secondary-color: var(--tgr-blue);
-            --accent-color: var(--tgr-blue);
-            --bg-gradient-start: #1a1a1d;
-            --bg-gradient-end: #111113;
-            --card-bg: #2c2c31;
-            --input-bg: #3a3a40;
-            --input-border: #4a4a50;
-            --input-focus-border: var(--tgr-blue);
-            --input-focus-glow: rgba(66, 165, 245, 0.3);
-            --text-primary: #f5f5f5;
-            --text-secondary: #bdbdbd;
-            --text-placeholder: #757575;
-            --text-light: #ffffff;
-            --text-business: rgba(255, 255, 255, 0.6);
-            --output-bg: #1f1f21;
-            --output-text: #e0e0e0;
-            --output-border: #333335;
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --glow-color: rgba(66, 165, 245, 0.2);
-            --success-color: #66BB6A;
-            --error-color: var(--tgr-red);
-            /* Visual Card Specifics */
-            --visual-card-bg: #ffffff;
-            --visual-card-text: #111111; /* Darker black for sharpness */
-            --visual-card-border: #cccccc; /* More visible separator */
+        :root { /* ... (keep existing :root variables) ... */
+            --tgr-red: #EF5350; --tgr-blue: #42A5F5; --primary-color: var(--tgr-red);
+            --secondary-color: var(--tgr-blue); --accent-color: var(--tgr-blue);
+            --bg-gradient-start: #1a1a1d; --bg-gradient-end: #111113; --card-bg: #2c2c31;
+            --input-bg: #3a3a40; --input-border: #4a4a50; --input-focus-border: var(--tgr-blue);
+            --input-focus-glow: rgba(66, 165, 245, 0.3); --text-primary: #f5f5f5;
+            --text-secondary: #bdbdbd; --text-placeholder: #757575; --text-light: #ffffff;
+            --text-business: rgba(255, 255, 255, 0.6); --output-bg: #1f1f21;
+            --output-text: #e0e0e0; --output-border: #333335; --shadow-color: rgba(0, 0, 0, 0.3);
+            --glow-color: rgba(66, 165, 245, 0.2); --success-color: #66BB6A;
+            --error-color: var(--tgr-red); --visual-card-bg: #ffffff;
+            --visual-card-text: #111111; --visual-card-border: #bbbbbb; /* Slightly darker separator */
         }
-        /* ... (Keep all existing base, body, container, typography, form, button, output, footer, hr, responsive styles from previous version) ... */
-
+        /* ... (Keep all existing base, body, container, typography, form, button, output, footer, hr, responsive styles from previous version, EXCEPT the .epin-visual-card related ones below) ... */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body {
@@ -146,29 +125,26 @@
         .footer a:hover { color: var(--primary-color); text-shadow: 0 0 5px rgba(239, 83, 80, 0.5); }
         hr { border: none; height: 1px; background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 40px 0; }
 
-        /* --- UPDATED Styles for Visual EPIN Cards --- */
+
+        /* --- REVISED Styles for Visual EPIN Cards --- */
         #visualOutputContainer {
             margin-top: 20px;
-            background-color: var(--visual-card-bg); /* White background for the image capture area */
-            padding: 15px; /* Padding around all cards for capture */
+            background-color: var(--visual-card-bg);
+            padding: 15px;
             border-radius: 8px;
-            display: none; /* Hidden by default, shown by JS */
-            max-width: 450px; /* Constrain width of the entire visual block */
-            margin-left: auto; /* Center the block if parent is wider */
+            display: none;
+            max-width: 480px; /* Adjust width to content + logo */
+            margin-left: auto;
             margin-right: auto;
         }
         .epin-visual-card {
+            display: flex; /* Use flexbox for logo and details alignment */
+            align-items: center; /* Vertically align logo and text block */
             color: var(--visual-card-text);
-            /* Use a clear sans-serif font, Roboto is good for print/sharpness */
             font-family: 'Roboto', Arial, sans-serif;
-            font-size: 12px; /* Base size for visual card */
-            line-height: 1.4; /* Tighter line height for density */
-            border-bottom: 2px dashed var(--visual-card-border); /* More visible separator */
-            padding-bottom: 8px; /* Space above separator */
-            margin-bottom: 8px; /* Space below separator, before next card */
-            position: relative; /* For absolute positioning of logo */
-            padding-right: 70px; /* Space on the right for the logo */
-            min-height: 60px; /* Ensure enough height for logo */
+            border-bottom: 2px dashed var(--visual-card-border);
+            padding-bottom: 10px; /* Space above separator */
+            margin-bottom: 10px; /* Space below separator */
         }
         .epin-visual-card:last-child {
             border-bottom: none;
@@ -176,65 +152,67 @@
             padding-bottom: 0;
         }
         .epin-visual-card .logo-container {
-            position: absolute;
-            top: 5px; /* Adjust vertical position of logo */
-            right: 0px; /* Align to the far right of the card's padding */
-            width: 60px; /* Max width of logo */
-            height: auto;
+            /* flex-shrink: 0; Remove if causing issues with width */
+            width: 75px;  /* Increased logo container width */
+            margin-right: 8px; /* Small space between logo and text */
         }
         .epin-visual-card .logo-container img {
             max-width: 100%;
-            max-height: 35px; /* Control logo height */
-            display: block; /* Remove extra space below img */
+            height: auto;
+            max-height: 50px; /* Increased logo height */
+            display: block;
+        }
+        .epin-visual-card .details {
+            flex-grow: 1; /* Text details take remaining space */
+            line-height: 1.45; /* Adjust for better readability with larger text */
         }
         .epin-visual-card .company-name-visual {
-            font-weight: 700; /* Bolder */
-            font-size: 13px; /* Slightly larger */
-            margin-bottom: 2px;
+            font-weight: 700;
+            font-size: 15px; /* Increased */
+            margin-bottom: 3px;
         }
         .epin-visual-card .network-amount-visual {
-            font-weight: 500; /* Medium weight */
-            font-size: 12px;
-            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 14px; /* Increased */
+            margin-bottom: 5px;
         }
         .epin-visual-card .pin-visual,
         .epin-visual-card .load-info-visual,
         .epin-visual-card .advert-visual,
         .epin-visual-card .extra-info-visual {
-            font-weight: 500; /* Medium weight for better sharpness */
-            font-size: 11px; /* Adjust for density if needed */
-            margin-bottom: 2px;
+            font-weight: 500;
+            font-size: 13px; /* Increased */
+            margin-bottom: 3px;
             word-break: break-all;
         }
-        .epin-visual-card .pin-visual span { /* For "PIN:" label */
-            font-weight: 700; /* Bolder */
+        .epin-visual-card .pin-visual span {
+            font-weight: 700;
         }
 
-        /* Responsive adjustments (existing) */
-        @media (max-width: 768px) { /* ... keep existing ... */ }
+
         @media (max-width: 480px) {
-             /* ... keep existing ... */
-            #visualOutputContainer { max-width: 100%; padding: 10px; } /* Full width on small screens */
-            .epin-visual-card { font-size: 10px; padding-right: 55px; min-height: 50px; }
-            .epin-visual-card .company-name-visual { font-size: 11px; }
-            .epin-visual-card .logo-container { width: 50px; top: 3px;}
-            .epin-visual-card .logo-container img { max-height: 30px;}
+            #visualOutputContainer { max-width: 100%; padding: 10px; }
+            .epin-visual-card { flex-direction: column; align-items: flex-start; } /* Stack logo and text on very small screens */
+            .epin-visual-card .logo-container { margin-right: 0; margin-bottom: 5px; width: 65px; }
+            .epin-visual-card .logo-container img { max-height: 40px;}
+            .epin-visual-card .company-name-visual { font-size: 14px; }
+            .epin-visual-card .network-amount-visual { font-size: 13px; }
             .epin-visual-card .pin-visual,
             .epin-visual-card .load-info-visual,
             .epin-visual-card .advert-visual,
-            .epin-visual-card .extra-info-visual { font-size: 10px; }
+            .epin-visual-card .extra-info-visual { font-size: 12px; }
         }
 
     </style>
 </head>
 <body>
+    <!-- ... (HTML structure remains the same as your previous version) ... -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC9CR6XD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="container">
-        <p class="business-name">Dammie Optimus Solution</p>
+        <p class="business-name">Dammie Optimus Solutions</p>
         <h1 class="main-title">TGR EPIN Formatter</h1>
 
-        <!-- ... (rest of the HTML for form and buttons remains the same as your previous version) ... -->
         <div class="form-group">
             <label for="txtCompanyName" class="form-label">Company Name / Advert / Dashes</label>
             <input type="text" class="form-control" id="txtCompanyName" placeholder="e.g. MyCompany | Optional Advert | 40">
@@ -281,18 +259,19 @@
     </footer>
 
     <script>
-        // --- JavaScript (Logic for formatEpins visual card generation updated) ---
+        // --- JavaScript (Visual card generation HTML structure updated) ---
         const networkProviderDic = { "A": "AIRTEL", "N": "9MOBILE", "9": "9MOBILE", "E": "ETISALAT", "M": "MTN", "G": "GLO" };
         const loadCodeForProviderDic = { "A": "*311*PIN#", "N": "*311*PIN#", "9": "*311*PIN#", "E": "*311*PIN#", "M": "*311*PIN#", "G": "*203*3*PIN#" };
         const networkLogos = {
             "A": "logos/airtel-logo.png", "M": "logos/mtn-logo.png",
             "G": "logos/glo-logo.png", "N": "logos/9mobile-logo.png",
-            "E": "logos/9mobile-logo.png"
+            "E": "logos/9mobile-logo.png" // Etisalat (Legacy) can use 9mobile logo
         };
 
         function getWords(text) { if (!text) return []; return text.toUpperCase().match(/[a-zA-Z0-9]+/g) || []; }
 
         function formatEpins() {
+            // ... (keep existing variable declarations and input validation from previous script) ...
             const companyNameElem = document.getElementById('txtCompanyName');
             const epinListStringElem = document.getElementById('txtEpinDetails');
             const networkAndAmountElem = document.getElementById('lstNetworkAndAmount');
@@ -365,22 +344,22 @@
                 textCard += `PIN: ${epinWithDashes}\n`;
                 textCard += `HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}\n`;
 
-                // --- UPDATED Visual Card Generation ---
+                // --- REVISED Visual Card Generation HTML ---
                 const visualCard = document.createElement('div');
                 visualCard.className = 'epin-visual-card';
 
-                // Logo Container
+                // Logo Container (Flex Item 1)
                 const logoContainer = document.createElement('div');
                 logoContainer.className = 'logo-container';
                 const logoImg = document.createElement('img');
                 logoImg.src = networkLogos[networkCode] || 'logos/default-logo.png';
                 logoImg.alt = `${selectedNetworkName} Logo`;
                 logoContainer.appendChild(logoImg);
-                visualCard.appendChild(logoContainer); // Add logo first or last based on desired float/position
+                visualCard.appendChild(logoContainer);
 
-                // Details Container
+                // Details Container (Flex Item 2)
                 const detailsDiv = document.createElement('div');
-                detailsDiv.className = 'details'; // If you need to style details separately from logo
+                detailsDiv.className = 'details';
 
                 detailsDiv.innerHTML += `<div class="company-name-visual">${companyName.toUpperCase()}</div>`;
                 detailsDiv.innerHTML += `<div class="network-amount-visual">${selectedNetworkName} ₦${cardAmount}</div>`;
@@ -397,7 +376,7 @@
                     textCard += `${advertText.toUpperCase()}\n`;
                     detailsDiv.innerHTML += `<div class="advert-visual">${advertText.toUpperCase()}</div>`;
                 }
-                visualCard.appendChild(detailsDiv); // Add details
+                visualCard.appendChild(detailsDiv);
                 visualOutputContainer.appendChild(visualCard);
                 // --- End Visual Card ---
 
@@ -407,6 +386,7 @@
                 epinFinalString += textCard;
             });
 
+            // ... (rest of the formatEpins function remains the same: setting output, enabling buttons, scrolling) ...
             outputElem.innerHTML = epinFinalString.trim();
             outputHeaderElem.innerHTML = `Text Output: ${epinList.length} EPIN(s) Formatted`;
             visualOutputHeader.innerHTML = `Visual Output: ${epinList.length} EPIN(s) Formatted`;
@@ -418,7 +398,7 @@
         }
 
         function copyOutputContent() { /* ... same as before ... */
-            const output = document.getElementById("output");
+             const output = document.getElementById("output");
             const outputHeaderElem = document.getElementById("outputHeader");
             const copyButton = document.getElementById('btnCopyOutputContent');
 
@@ -446,7 +426,6 @@
                 });
         }
 
-
         function downloadVisualOutput() { /* ... same as before ... */
             const visualContainer = document.getElementById('visualOutputContainer');
             const downloadButton = document.getElementById('btnDownloadVisual');
@@ -461,9 +440,9 @@
 
             const options = {
                 backgroundColor: getComputedStyle(visualContainer).backgroundColor || "#ffffff",
-                scale: window.devicePixelRatio * 2, // Increased scale for even better resolution
+                scale: window.devicePixelRatio * 2, // High scale for good resolution
                 useCORS: true,
-                logging: false, // Disable extensive logging unless debugging
+                logging: false,
                 onclone: (document) => { }
             };
 
@@ -495,7 +474,6 @@
                 downloadButton.textContent = originalButtonText;
             });
         }
-
 
         document.getElementById("footerYear").innerHTML = new Date().getFullYear();
         document.getElementById('btnCopyOutputContent').disabled = true;
