@@ -6,7 +6,7 @@
     <title>TGR EPIN Formatter</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@700;900&display=swap" rel="stylesheet"> {/* Roboto 700 & 900 */}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         :root { /* ... (keep existing :root variables) ... */
@@ -21,7 +21,7 @@
             --glow-color: rgba(66, 165, 245, 0.2); --success-color: #66BB6A;
             --error-color: var(--tgr-red); --visual-card-bg: #ffffff;
             --visual-card-text: #000000;
-            --visual-card-border: #999999;
+            --visual-card-border: #888888; /* Slightly more visible separator */
         }
         /* ... (Keep all existing base, body, container, typography, form, button, output, footer, hr, responsive styles from previous version, EXCEPT the .epin-visual-card related ones below) ... */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -126,15 +126,14 @@
         .footer a:hover { color: var(--primary-color); text-shadow: 0 0 5px rgba(239, 83, 80, 0.5); }
         hr { border: none; height: 1px; background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 40px 0; }
 
-
-        /* --- EVEN BIGGER & TIGHTER Visual EPIN Cards --- */
+        /* --- MAX READABILITY Visual EPIN Cards --- */
         #visualOutputContainer {
             margin-top: 20px;
             background-color: var(--visual-card-bg);
-            padding: 5px 8px; /* Minimal padding for the container */
-            border-radius: 5px;
+            padding: 4px 6px; /* Even more minimal padding */
+            border-radius: 4px;
             display: none;
-            width: fit-content; /* Crucial for no excess right space */
+            width: fit-content;
             margin-left: auto;
             margin-right: auto;
         }
@@ -144,8 +143,8 @@
             color: var(--visual-card-text);
             font-family: 'Roboto', Arial, sans-serif;
             border-bottom: 2px dashed var(--visual-card-border);
-            padding-bottom: 2px; /* Minimal */
-            margin-bottom: 2px;  /* Minimal */
+            padding-bottom: 1px; /* Minimal */
+            margin-bottom: 1px;  /* Minimal */
         }
         .epin-visual-card:last-child {
             border-bottom: none;
@@ -153,68 +152,65 @@
             padding-bottom: 0;
         }
         .epin-visual-card .logo-container {
-            width: 100px;  /* BIGGER logo container */
-            margin-right: 2px; /* ALMOST TOUCHING space */
+            width: 100px;
+            margin-right: 1px; /* VIRTUALLY TOUCHING */
             flex-shrink: 0;
-            display: flex; /* To center image within container if needed */
+            display: flex;
             align-items: center;
             justify-content: center;
         }
         .epin-visual-card .logo-container img {
             max-width: 100%;
             height: auto;
-            max-height: 75px; /* BIGGER logo */
+            max-height: 75px; /* Kept from previous */
             display: block;
         }
         .epin-visual-card .details {
             flex-grow: 1;
-            line-height: 1.15; /* EXTREMELY condensed line height */
+            line-height: 1.1; /* SUPER condensed line height */
         }
-        .epin-visual-card .company-name-visual {
-            font-weight: 700;
-            font-size: 24px; /* MUCH BIGGER */
-            margin-bottom: 0;
-        }
-        .epin-visual-card .network-amount-visual {
-            font-weight: 500;
-            font-size: 22px; /* MUCH BIGGER */
-            margin-bottom: 0;
-        }
-        .epin-visual-card .pin-visual {
-            font-weight: 900;
-            font-size: 26px; /* Kept same as last round, per request */
-            margin-top: 1px;
-            margin-bottom: 1px;
-            letter-spacing: 0.5px;
-            word-break: break-all;
-        }
-        .epin-visual-card .pin-visual span {
-            font-weight: 700;
-            font-size: 22px; /* Adjusted to match other text */
-            margin-right: 4px;
-        }
+        .epin-visual-card .company-name-visual,
+        .epin-visual-card .network-amount-visual,
+        .epin-visual-card .pin-visual span, /* "PIN:" label */
         .epin-visual-card .load-info-visual,
         .epin-visual-card .advert-visual,
         .epin-visual-card .extra-info-visual {
-            font-weight: 500;
-            font-size: 20px; /* MUCH BIGGER */
+            font-weight: 700; /* BOLD for all */
+            font-size: 26px;   /* MATCH PIN SIZE for all text (except actual PIN number) */
+            margin-bottom: 0;  /* No extra margin */
+            word-break: break-word; /* Allow breaking long words if necessary */
+        }
+        .epin-visual-card .pin-visual { /* The actual PIN number */
+            font-weight: 900; /* Extra BOLD for PIN number */
+            font-size: 26px;   /* Current PIN number size */
+            margin-top: 0;
             margin-bottom: 0;
-            word-break: break-all;
+            letter-spacing: 0.5px;
+            word-break: break-all; /* Ensure PIN itself can break if extremely long */
+            /* Remove span for actual PIN number - apply styles directly */
+        }
+        /* Adjust "PIN:" label specifically if needed, it's now part of the rule above */
+        .epin-visual-card .pin-visual span {
+             margin-right: 5px; /* Space after "PIN:" */
         }
 
 
         @media (max-width: 480px) {
-            #visualOutputContainer { max-width: 100%; padding: 4px; }
-            .epin-visual-card .logo-container { margin-right: 1px; width: 85px; }
-            .epin-visual-card .logo-container img { max-height: 65px;}
+            #visualOutputContainer { max-width: 100%; padding: 3px; }
+            .epin-visual-card .logo-container { margin-right: 1px; width: 80px; }
+            .epin-visual-card .logo-container img { max-height: 60px;}
 
-            .epin-visual-card .company-name-visual { font-size: 20px; }
-            .epin-visual-card .network-amount-visual { font-size: 19px; }
-            /* PIN size remains from previous settings for mobile for now */
-            .epin-visual-card .pin-visual span { font-size: 19px;}
+            .epin-visual-card .company-name-visual,
+            .epin-visual-card .network-amount-visual,
+            .epin-visual-card .pin-visual span,
             .epin-visual-card .load-info-visual,
             .epin-visual-card .advert-visual,
-            .epin-visual-card .extra-info-visual { font-size: 18px; }
+            .epin-visual-card .extra-info-visual {
+                font-size: 20px; /* Large for mobile too */
+            }
+             .epin-visual-card .pin-visual { /* PIN number on mobile */
+                font-size: 22px;
+            }
         }
 
     </style>
@@ -370,7 +366,8 @@
                 detailsDiv.className = 'details';
                 detailsDiv.innerHTML += `<div class="company-name-visual">${companyName.toUpperCase()}</div>`;
                 detailsDiv.innerHTML += `<div class="network-amount-visual">${selectedNetworkName} ₦${cardAmount}</div>`;
-                detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span> ${epinWithDashes}</div>`;
+                // For .pin-visual, the number part is now styled directly, label is in span
+                detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span>${epinWithDashes}</div>`;
                 detailsDiv.innerHTML += `<div class="load-info-visual">HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}</div>`;
 
                 if (networkCode === "G") {
@@ -445,7 +442,7 @@
 
             const options = {
                 backgroundColor: getComputedStyle(visualContainer).backgroundColor || "#ffffff",
-                scale: window.devicePixelRatio * 3, // Max scale
+                scale: window.devicePixelRatio * 3,
                 useCORS: true,
                 logging: false,
                 onclone: (document) => { }
