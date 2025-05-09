@@ -21,7 +21,7 @@
             --glow-color: rgba(66, 165, 245, 0.2); --success-color: #66BB6A;
             --error-color: var(--tgr-red); --visual-card-bg: #ffffff;
             --visual-card-text: #000000;
-            --visual-card-border: #888888; /* Slightly more visible separator */
+            --visual-card-border: #888888;
         }
         /* ... (Keep all existing base, body, container, typography, form, button, output, footer, hr, responsive styles from previous version, EXCEPT the .epin-visual-card related ones below) ... */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -126,12 +126,13 @@
         .footer a:hover { color: var(--primary-color); text-shadow: 0 0 5px rgba(239, 83, 80, 0.5); }
         hr { border: none; height: 1px; background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 40px 0; }
 
-        /* --- MAX READABILITY Visual EPIN Cards --- */
+
+        /* --- SUPER-SIZED & EMPHASIZED Visual EPIN Cards --- */
         #visualOutputContainer {
             margin-top: 20px;
             background-color: var(--visual-card-bg);
-            padding: 4px 6px; /* Even more minimal padding */
-            border-radius: 4px;
+            padding: 3px 5px; /* Minimal padding for the container */
+            border-radius: 3px;
             display: none;
             width: fit-content;
             margin-left: auto;
@@ -143,8 +144,8 @@
             color: var(--visual-card-text);
             font-family: 'Roboto', Arial, sans-serif;
             border-bottom: 2px dashed var(--visual-card-border);
-            padding-bottom: 1px; /* Minimal */
-            margin-bottom: 1px;  /* Minimal */
+            padding-bottom: 1px;
+            margin-bottom: 1px;
         }
         .epin-visual-card:last-child {
             border-bottom: none;
@@ -152,7 +153,7 @@
             padding-bottom: 0;
         }
         .epin-visual-card .logo-container {
-            width: 100px;
+            width: 110px;  /* LARGEST logo container */
             margin-right: 1px; /* VIRTUALLY TOUCHING */
             flex-shrink: 0;
             display: flex;
@@ -162,54 +163,66 @@
         .epin-visual-card .logo-container img {
             max-width: 100%;
             height: auto;
-            max-height: 75px; /* Kept from previous */
+            max-height: 85px; /* LARGEST logo */
             display: block;
         }
         .epin-visual-card .details {
             flex-grow: 1;
-            line-height: 1.1; /* SUPER condensed line height */
+            line-height: 1.05; /* EXTREMELY SUPER condensed line height */
         }
+
+        /* General Text (Company, Network, Advert, GLO extra) */
         .epin-visual-card .company-name-visual,
         .epin-visual-card .network-amount-visual,
-        .epin-visual-card .pin-visual span, /* "PIN:" label */
-        .epin-visual-card .load-info-visual,
         .epin-visual-card .advert-visual,
         .epin-visual-card .extra-info-visual {
-            font-weight: 700; /* BOLD for all */
-            font-size: 26px;   /* MATCH PIN SIZE for all text (except actual PIN number) */
-            margin-bottom: 0;  /* No extra margin */
-            word-break: break-word; /* Allow breaking long words if necessary */
-        }
-        .epin-visual-card .pin-visual { /* The actual PIN number */
-            font-weight: 900; /* Extra BOLD for PIN number */
-            font-size: 26px;   /* Current PIN number size */
-            margin-top: 0;
+            font-weight: 700; /* BOLD */
+            font-size: 30px;   /* SUPER-SIZED General Text */
             margin-bottom: 0;
-            letter-spacing: 0.5px;
-            word-break: break-all; /* Ensure PIN itself can break if extremely long */
-            /* Remove span for actual PIN number - apply styles directly */
+            word-break: break-word;
         }
-        /* Adjust "PIN:" label specifically if needed, it's now part of the rule above */
-        .epin-visual-card .pin-visual span {
-             margin-right: 5px; /* Space after "PIN:" */
+
+        /* PIN Line (Label + Number) & HOW TO LOAD - Extra Emphasis */
+        .epin-visual-card .pin-visual,
+        .epin-visual-card .load-info-visual {
+            font-weight: 700; /* BOLD */
+            font-size: 34px;   /* EVEN BIGGER for PIN and Load Info */
+            margin-top: 1px;   /* Minimal top margin */
+            margin-bottom: 0;
+            word-break: break-word;
         }
+        .epin-visual-card .pin-visual span { /* "PIN:" label */
+            font-weight: 700; /* Consistent bold */
+            /* font-size will be inherited from .pin-visual */
+            margin-right: 6px; /* Space after "PIN:" */
+        }
+        /* Actual PIN number within .pin-visual if you want to make it even bolder */
+        .epin-visual-card .pin-visual {
+            /* The number part is not in a separate span, so its font-weight is set by .pin-visual itself. */
+            /* If you need PIN number even bolder than its label, you'd wrap number in another span */
+        }
+        /* If you want the PIN digits EXTRA BOLD (e.g., 900), you'd modify the JS to wrap them:
+           detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span><span class="pin-digits">${epinWithDashes}</span></div>`;
+           And add CSS: .pin-digits { font-weight: 900; }
+           For now, keeping it simple with .pin-visual at 700, PIN number will also be 700.
+           If your 'Roboto' has 900, you can set .pin-visual { font-weight: 900; }
+        */
 
 
         @media (max-width: 480px) {
-            #visualOutputContainer { max-width: 100%; padding: 3px; }
-            .epin-visual-card .logo-container { margin-right: 1px; width: 80px; }
-            .epin-visual-card .logo-container img { max-height: 60px;}
+            #visualOutputContainer { max-width: 100%; padding: 2px; }
+            .epin-visual-card .logo-container { margin-right: 1px; width: 90px; }
+            .epin-visual-card .logo-container img { max-height: 70px;}
 
             .epin-visual-card .company-name-visual,
             .epin-visual-card .network-amount-visual,
-            .epin-visual-card .pin-visual span,
-            .epin-visual-card .load-info-visual,
             .epin-visual-card .advert-visual,
             .epin-visual-card .extra-info-visual {
-                font-size: 20px; /* Large for mobile too */
+                font-size: 22px; /* Still very large for mobile */
             }
-             .epin-visual-card .pin-visual { /* PIN number on mobile */
-                font-size: 22px;
+            .epin-visual-card .pin-visual,
+            .epin-visual-card .load-info-visual {
+                font-size: 26px; /* Emphasized on mobile */
             }
         }
 
@@ -366,7 +379,6 @@
                 detailsDiv.className = 'details';
                 detailsDiv.innerHTML += `<div class="company-name-visual">${companyName.toUpperCase()}</div>`;
                 detailsDiv.innerHTML += `<div class="network-amount-visual">${selectedNetworkName} ₦${cardAmount}</div>`;
-                // For .pin-visual, the number part is now styled directly, label is in span
                 detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span>${epinWithDashes}</div>`;
                 detailsDiv.innerHTML += `<div class="load-info-visual">HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}</div>`;
 
