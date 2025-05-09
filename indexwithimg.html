@@ -126,15 +126,17 @@
         .footer a:hover { color: var(--primary-color); text-shadow: 0 0 5px rgba(239, 83, 80, 0.5); }
         hr { border: none; height: 1px; background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 40px 0; }
 
-        /* --- PRINT-OPTIMIZED Visual EPIN Cards (Non-Responsive for Capture) --- */
+        /* --- VISUAL EPIN Cards - NO WRAP & VISIBLE --- */
         #visualOutputContainer {
             margin-top: 20px;
             background-color: var(--visual-card-bg);
             padding: 5px 8px;
             border-radius: 4px;
-            display: none; /* Shown by JS before capture */
-            width: 480px; /* FIXED WIDTH for consistent capture - adjust as needed based on largest content */
-            /* Remove margin-left/right auto if using a fixed width and you don't want it centered on screen when briefly visible */
+            display: none; /* Controlled by JS - set to 'block' after formatting */
+            width: fit-content; /* Let content dictate width */
+            min-width: 450px; /* A minimum width to prevent extreme squishing if content is very short */
+            margin-left: auto;
+            margin-right: auto;
         }
         .epin-visual-card {
             display: flex;
@@ -142,8 +144,8 @@
             color: var(--visual-card-text);
             font-family: 'Roboto', Arial, sans-serif;
             border-bottom: 2px dashed var(--visual-card-border);
-            padding-bottom: 5px; /* Increased for separation */
-            margin-bottom: 5px;  /* Increased for separation */
+            padding-bottom: 5px; /* More space for cutting */
+            margin-bottom: 5px;  /* More space for cutting */
         }
         .epin-visual-card:last-child {
             border-bottom: none;
@@ -167,64 +169,31 @@
         .epin-visual-card .details {
             flex-grow: 1;
             line-height: 1.1;
+            white-space: nowrap; /* PREVENT TEXT WRAPPING */
+            overflow: hidden; /* Hide overflow if text is extremely long and nowrap is on */
+            text-overflow: ellipsis; /* Optional: show ... for very long lines (might not be desired for print) */
         }
-
-        /* Base large text for visual cards */
         .epin-visual-card .company-name-visual,
         .epin-visual-card .network-amount-visual,
         .epin-visual-card .advert-visual,
         .epin-visual-card .extra-info-visual {
             font-weight: 700;
-            font-size: 30px; /* Base large size */
+            font-size: 30px;
             margin-bottom: 0;
-            word-break: break-word;
         }
-
-        /* PIN Line (Label + Number) & HOW TO LOAD - Extra Emphasis */
-        .epin-visual-card .pin-visual, /* Applies to whole PIN line div */
+        .epin-visual-card .pin-visual,
         .epin-visual-card .load-info-visual {
-            font-weight: 700; /* Base bold for these lines */
-            font-size: 36px;   /* LARGER for PIN and Load Info */
+            font-weight: 700;
+            font-size: 36px;
             margin-top: 1px;
-            margin-bottom: 1px; /* Minimal margin between these emphasized lines */
-            word-break: break-word;
+            margin-bottom: 1px;
         }
-        .epin-visual-card .pin-visual span { /* "PIN:" label part */
-            /* Inherits size and weight from .pin-visual */
+        .epin-visual-card .pin-visual span {
             margin-right: 6px;
         }
-        /* If you need the PIN *digits* to be even bolder, e.g., 900 weight.
-           You would need to wrap the epinWithDashes in JS with <span class="pin-digits">...</span>
-           and then add:
-           .epin-visual-card .pin-digits { font-weight: 900; }
-        */
+        /* Remove responsive styles for .epin-visual-card elements to ensure desktop look for download */
+        /* The general responsive rules for .container etc. will still apply for on-screen view */
 
-        /* Responsive styles for ON-SCREEN DISPLAY only */
-        @media (max-width: 768px) {
-             /* ... keep existing .container, .business-name, h1, h2, .button-group, .btn responsive styles ... */
-        }
-        @media (max-width: 480px) {
-            /* ... keep existing .container, .business-name, h1, h2, .form-*, .btn, #output responsive styles ... */
-
-            /* For ON-SCREEN display of #visualOutputContainer if we were to show it responsively */
-            /*
-            #visualOutputContainer.responsive-display {
-                max-width: 100%; padding: 5px;
-            }
-            #visualOutputContainer.responsive-display .epin-visual-card .logo-container { margin-right: 1px; width: 80px; }
-            #visualOutputContainer.responsive-display .epin-visual-card .logo-container img { max-height: 60px;}
-            #visualOutputContainer.responsive-display .epin-visual-card .company-name-visual,
-            #visualOutputContainer.responsive-display .epin-visual-card .network-amount-visual,
-            #visualOutputContainer.responsive-display .epin-visual-card .advert-visual,
-            #visualOutputContainer.responsive-display .epin-visual-card .extra-info-visual {
-                font-size: 22px;
-            }
-            #visualOutputContainer.responsive-display .epin-visual-card .pin-visual,
-            #visualOutputContainer.responsive-display .epin-visual-card .load-info-visual {
-                font-size: 26px;
-            }
-            */
-        }
     </style>
 </head>
 <body>
@@ -281,7 +250,7 @@
     </footer>
 
     <script>
-        // --- JavaScript (No changes to logic needed for these CSS adjustments) ---
+        // --- JavaScript ---
         const networkProviderDic = { "A": "AIRTEL", "N": "9MOBILE", "9": "9MOBILE", "E": "ETISALAT", "M": "MTN", "G": "GLO" };
         const loadCodeForProviderDic = { "A": "*311*PIN#", "N": "*311*PIN#", "9": "*311*PIN#", "E": "*311*PIN#", "M": "*311*PIN#", "G": "*203*3*PIN#" };
         const networkLogos = {
@@ -311,7 +280,7 @@
             outputHeaderElem.classList.remove('pulse-success');
             outputElem.classList.remove("outputVisible"); outputElem.classList.add("outputHidden");
             visualOutputContainer.innerHTML = '';
-            // visualOutputContainer.style.display = 'none'; // Will be set to 'block' before capture
+            visualOutputContainer.style.display = 'none'; // Keep it hidden initially
             visualOutputHeader.style.display = 'none'; outputHeaderElem.style.color = 'var(--secondary-color)';
             outputHeaderElem.innerHTML = 'Text Output';
 
@@ -408,8 +377,10 @@
             outputElem.classList.remove("outputHidden");
             requestAnimationFrame(() => requestAnimationFrame(() => outputElem.classList.add("outputVisible")));
 
-            // visualOutputContainer.style.display = 'block'; // We'll show this just before capture
-            visualOutputHeader.style.display = 'block'; // Can show this header now
+            // Make visual output visible on screen as well
+            visualOutputContainer.style.display = 'block';
+            visualOutputHeader.style.display = 'block';
+
             outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
@@ -447,27 +418,28 @@
             const downloadButton = document.getElementById('btnDownloadVisual');
             const originalButtonText = downloadButton.textContent;
 
-            if (!visualContainer || visualContainer.children.length === 0) { // Check if cards were generated
+            if (!visualContainer || visualContainer.children.length === 0 || visualContainer.style.display === 'none') {
+                // Check if it's 'none' because it might not have been explicitly set to 'block' if formatEpins wasn't called or had an error
                 alert("Please format EPINs first to generate visual output.");
                 return;
             }
             downloadButton.disabled = true;
             downloadButton.textContent = "Generating...";
 
-            // --- Crucial: Temporarily show the container for html2canvas to "see" it ---
+            // Temporarily ensure it's block for capture, though formatEpins should have done this.
+            // This is more of a safeguard if download is clicked when it's hidden for some other reason.
+            const originalDisplay = visualContainer.style.display;
             visualContainer.style.display = 'block';
-            // visualContainer.classList.remove('outputHidden'); // If you were using this class
+
 
             // Small delay to ensure the browser has rendered the visualContainer
-            // before html2canvas tries to capture it.
             setTimeout(() => {
                 const options = {
                     backgroundColor: getComputedStyle(visualContainer).backgroundColor || "#ffffff",
-                    scale: window.devicePixelRatio * 3, // Max scale
-                    useCORS: true, // Important if logos were ever hosted externally
+                    scale: window.devicePixelRatio * 3,
+                    useCORS: true,
                     logging: false,
-                     // Ensure all images are loaded
-                    allowTaint: true // Might be needed if useCORS is not enough for local files in some browsers
+                    allowTaint: true
                 };
 
                 html2canvas(visualContainer, options).then(canvas => {
@@ -476,11 +448,9 @@
                     link.href = canvas.toDataURL('image/png');
                     link.click();
 
-                    // --- Clean up after capture ---
                     downloadButton.disabled = false;
                     downloadButton.textContent = originalButtonText;
-                    visualContainer.style.display = 'none'; // Hide it again
-                    // visualContainer.classList.add('outputHidden');
+                    // visualContainer.style.display = originalDisplay; // Revert to original display (likely 'none' after form clear)
 
 
                     document.getElementById('txtCompanyName').value = "";
@@ -492,6 +462,7 @@
 
                     document.getElementById("output").classList.remove("outputVisible");
                     document.getElementById("output").classList.add("outputHidden");
+                    visualContainer.style.display = 'none'; // Explicitly hide after download and clear
                     document.getElementById("visualOutputHeader").style.display = 'none';
                     document.getElementById("outputHeader").innerHTML = 'Text Output';
 
@@ -500,10 +471,9 @@
                     alert("Sorry, an error occurred while generating the image. Check console for details.");
                     downloadButton.disabled = false;
                     downloadButton.textContent = originalButtonText;
-                    visualContainer.style.display = 'none'; // Hide on error too
-                    // visualContainer.classList.add('outputHidden');
+                    visualContainer.style.display = originalDisplay; // Revert on error
                 });
-            }, 100); // 100ms delay should be enough for rendering
+            }, 150); // Slightly longer delay for rendering complex styles
         }
 
         document.getElementById("footerYear").innerHTML = new Date().getFullYear();
