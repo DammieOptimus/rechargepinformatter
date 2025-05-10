@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>TGR EPIN Formatter</title>
+    <title>TGR EPIN Formatter - Print-Ready Visuals</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for WhatsApp Icon (Optional, but good for a small button) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         :root { /* ... (keep existing :root variables) ... */
@@ -22,8 +24,9 @@
             --error-color: var(--tgr-red); --visual-card-bg: #ffffff;
             --visual-card-text: #000000;
             --visual-card-border: #888888;
+            --whatsapp-green: #25D366;
         }
-        /* ... (Keep all existing base, body, container, typography, form, button, output, footer, hr styles from previous version) ... */
+        /* ... (Keep all existing base, body, typography, form, button, output, hr styles from previous version) ... */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body {
@@ -34,7 +37,7 @@
             transition: background 0.3s ease;
         }
         .container {
-            background-color: var(--card-bg); border-radius: 18px; padding: 40px 50px;
+            background-color: var(--card-bg); border-radius: 18px; padding: 40px 50px; /* Default padding */
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.4), 0 0 15px var(--glow-color);
             width: 90%; max-width: 780px; margin-top: 30px; margin-bottom: 30px;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -121,83 +124,118 @@
         #output.outputHidden { opacity: 0; max-height: 0; min-height: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; margin-top: 0; transform: translateY(20px); }
         .pulse-success { animation: pulse-success-animation 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse-success-animation { 0%, 100% { color: var(--success-color); transform: scale(1); } 50% { color: #81C784; transform: scale(1.05); } }
-        .footer { text-align: center; margin-top: 60px; font-size: 0.9rem; color: var(--text-secondary); }
-        .footer a { color: var(--secondary-color); text-decoration: none; font-weight: 500; transition: color 0.3s ease, text-shadow 0.3s ease; }
-        .footer a:hover { color: var(--primary-color); text-shadow: 0 0 5px rgba(239, 83, 80, 0.5); }
         hr { border: none; height: 1px; background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 40px 0; }
 
-        /* --- VISUAL EPIN Cards - NO WRAP & VISIBLE --- */
+
+        /* --- VISUAL EPIN Cards --- */
         #visualOutputContainer {
-            margin-top: 20px;
-            background-color: var(--visual-card-bg);
-            padding: 5px 8px;
-            border-radius: 4px;
-            display: none; /* Controlled by JS - set to 'block' after formatting */
-            width: fit-content; /* Let content dictate width */
-            min-width: 450px; /* A minimum width to prevent extreme squishing if content is very short */
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 20px; background-color: var(--visual-card-bg); padding: 5px 8px;
+            border-radius: 4px; display: none; width: fit-content; min-width: 450px;
+            margin-left: auto; margin-right: auto;
         }
         .epin-visual-card {
-            display: flex;
-            align-items: center;
-            color: var(--visual-card-text);
-            font-family: 'Roboto', Arial, sans-serif;
-            border-bottom: 2px dashed var(--visual-card-border);
-            padding-bottom: 5px; /* More space for cutting */
-            margin-bottom: 5px;  /* More space for cutting */
+            display: flex; align-items: center; color: var(--visual-card-text);
+            font-family: 'Roboto', Arial, sans-serif; border-bottom: 2px dashed var(--visual-card-border);
+            padding-bottom: 5px; margin-bottom: 5px;
         }
-        .epin-visual-card:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
+        .epin-visual-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .epin-visual-card .logo-container {
-            width: 100px;
-            margin-right: 2px;
-            flex-shrink: 0;
-            display: flex;
+            width: 100px; margin-right: 2px; flex-shrink: 0; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .epin-visual-card .logo-container img { max-width: 100%; height: auto; max-height: 75px; display: block; }
+        .epin-visual-card .details { flex-grow: 1; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .epin-visual-card .company-name-visual, .epin-visual-card .network-amount-visual,
+        .epin-visual-card .advert-visual, .epin-visual-card .extra-info-visual {
+            font-weight: 700; font-size: 30px; margin-bottom: 0; word-break: break-word;
+        }
+        .epin-visual-card .pin-visual, .epin-visual-card .load-info-visual {
+            font-weight: 700; font-size: 36px; margin-top: 1px; margin-bottom: 1px; word-break: break-word;
+        }
+        .epin-visual-card .pin-visual span { margin-right: 6px; }
+
+
+        /* --- Contact & Footer Area --- */
+        .contact-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: rgba(0,0,0,0.1); /* Subtle background for this section */
+            border-radius: 8px;
+        }
+        .contact-advert {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .btn-whatsapp {
+            display: inline-flex; /* For icon and text alignment */
             align-items: center;
-            justify-content: center;
+            background-color: var(--whatsapp-green);
+            color: white;
+            padding: 8px 15px; /* Smaller padding */
+            border-radius: 20px; /* Pill shape */
+            text-decoration: none;
+            font-size: 0.9rem; /* Smaller font */
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .epin-visual-card .logo-container img {
-            max-width: 100%;
-            height: auto;
-            max-height: 75px;
-            display: block;
+        .btn-whatsapp:hover {
+            background-color: #1EBE57; /* Darker WhatsApp green */
+            transform: translateY(-1px);
         }
-        .epin-visual-card .details {
-            flex-grow: 1;
-            line-height: 1.1;
-            white-space: nowrap; /* PREVENT TEXT WRAPPING */
-            overflow: hidden; /* Hide overflow if text is extremely long and nowrap is on */
-            text-overflow: ellipsis; /* Optional: show ... for very long lines (might not be desired for print) */
+        .btn-whatsapp i { /* Font Awesome icon */
+            margin-right: 8px;
+            font-size: 1.1rem; /* Slightly larger icon */
         }
-        .epin-visual-card .company-name-visual,
-        .epin-visual-card .network-amount-visual,
-        .epin-visual-card .advert-visual,
-        .epin-visual-card .extra-info-visual {
-            font-weight: 700;
-            font-size: 30px;
-            margin-bottom: 0;
+        .footer {
+            text-align: center;
+            margin-top: 20px; /* Reduced margin-top as contact section adds space */
+            padding-bottom: 20px; /* Ensure space at very bottom */
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
-        .epin-visual-card .pin-visual,
-        .epin-visual-card .load-info-visual {
-            font-weight: 700;
-            font-size: 36px;
-            margin-top: 1px;
-            margin-bottom: 1px;
+        .footer a {
+            color: var(--secondary-color); text-decoration: none; font-weight: 500;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
         }
-        .epin-visual-card .pin-visual span {
-            margin-right: 6px;
+        .footer a:hover { color: var(--primary-color); text-shadow: 0 0 5px rgba(239, 83, 80, 0.5); }
+
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 25px; /* INCREASED padding for more space on medium screens */
+            }
+            .business-name { font-size: 0.9rem; letter-spacing: 1px;}
+            h1.main-title { font-size: 2.1rem; }
+            h2.output-title { font-size: 1.5rem; }
+            .button-group { flex-direction: column; gap: 15px; }
+            .btn { width: 100%; }
+            .contact-section { margin-left: -25px; margin-right: -25px; border-radius: 0;} /* Extend to edges */
+
         }
-        /* Remove responsive styles for .epin-visual-card elements to ensure desktop look for download */
-        /* The general responsive rules for .container etc. will still apply for on-screen view */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px; /* FURTHER INCREASED padding for more space on small screens */
+                border-radius: 12px;
+            }
+            .business-name { font-size: 0.85rem; }
+            h1.main-title { font-size: 1.8rem; } /* Reduced further for small screens */
+            h2.output-title { font-size: 1.3rem; }
+            .form-control, .form-select { font-size: 0.9rem; padding: 12px 15px;} /* Slightly smaller form controls */
+            .btn { font-size: 0.9rem; }
+            #output { font-size: 0.85rem; padding: 20px;}
+            .contact-section { margin-left: -15px; margin-right: -15px; padding: 10px;}
+            .contact-advert {font-size: 0.9rem;}
+            .btn-whatsapp { padding: 7px 12px; font-size: 0.85rem;}
+        }
 
     </style>
 </head>
 <body>
-    <!-- ... (HTML structure remains the same) ... -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC9CR6XD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="container">
@@ -245,12 +283,23 @@
         </div>
     </div>
 
+    <!-- NEW Contact Section -->
+    <div class="contact-section">
+        <p class="contact-advert">
+            Need a custom application like this, or a Bluetooth thermal printer for your recharge card printing business?
+            Get in touch for a solution tailored to your needs!
+        </p>
+        <a href="https://wa.me/2348180419229?text=Hello%2C%20I'm%20interested%20in%20your%20custom%20app%2Fprinter%20services." class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i> Contact Dammie Optimus on WhatsApp
+        </a>
+    </div>
+
     <footer class="footer">
          © <span id="footerYear"></span> <a href="https://dammieoptimus.github.io/tgrstartnow/?d=eyJyZWYiOiJEYW1taWVPcHRpbXVzMiIsIm5hbWUiOiJEYW1taWUgKE9wdGltdXMpIEF5b2RlbGUiLCJwaG9uZSI6IjA4MDI4OTc1ODE2IiwicGljIjoiaHR0cHM6Ly9pLmltZ3VyLmNvbS9xcVVFNGFyLmpwZyJ9" target="_blank" rel="noopener noreferrer">Dammie Optimus Solutions Ltd.</a> All Rights Reserved.
     </footer>
 
     <script>
-        // --- JavaScript ---
+        // --- JavaScript (No changes to logic needed for these CSS adjustments) ---
         const networkProviderDic = { "A": "AIRTEL", "N": "9MOBILE", "9": "9MOBILE", "E": "ETISALAT", "M": "MTN", "G": "GLO" };
         const loadCodeForProviderDic = { "A": "*311*PIN#", "N": "*311*PIN#", "9": "*311*PIN#", "E": "*311*PIN#", "M": "*311*PIN#", "G": "*203*3*PIN#" };
         const networkLogos = {
@@ -280,7 +329,7 @@
             outputHeaderElem.classList.remove('pulse-success');
             outputElem.classList.remove("outputVisible"); outputElem.classList.add("outputHidden");
             visualOutputContainer.innerHTML = '';
-            visualOutputContainer.style.display = 'none'; // Keep it hidden initially
+            visualOutputContainer.style.display = 'none';
             visualOutputHeader.style.display = 'none'; outputHeaderElem.style.color = 'var(--secondary-color)';
             outputHeaderElem.innerHTML = 'Text Output';
 
@@ -377,8 +426,7 @@
             outputElem.classList.remove("outputHidden");
             requestAnimationFrame(() => requestAnimationFrame(() => outputElem.classList.add("outputVisible")));
 
-            // Make visual output visible on screen as well
-            visualOutputContainer.style.display = 'block';
+            visualOutputContainer.style.display = 'block'; // Make visual output visible on screen
             visualOutputHeader.style.display = 'block';
 
             outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -419,20 +467,14 @@
             const originalButtonText = downloadButton.textContent;
 
             if (!visualContainer || visualContainer.children.length === 0 || visualContainer.style.display === 'none') {
-                // Check if it's 'none' because it might not have been explicitly set to 'block' if formatEpins wasn't called or had an error
                 alert("Please format EPINs first to generate visual output.");
                 return;
             }
             downloadButton.disabled = true;
             downloadButton.textContent = "Generating...";
-
-            // Temporarily ensure it's block for capture, though formatEpins should have done this.
-            // This is more of a safeguard if download is clicked when it's hidden for some other reason.
-            const originalDisplay = visualContainer.style.display;
+            // Ensure it's block for capture (should be already if formatEpins ran successfully)
             visualContainer.style.display = 'block';
 
-
-            // Small delay to ensure the browser has rendered the visualContainer
             setTimeout(() => {
                 const options = {
                     backgroundColor: getComputedStyle(visualContainer).backgroundColor || "#ffffff",
@@ -450,8 +492,6 @@
 
                     downloadButton.disabled = false;
                     downloadButton.textContent = originalButtonText;
-                    // visualContainer.style.display = originalDisplay; // Revert to original display (likely 'none' after form clear)
-
 
                     document.getElementById('txtCompanyName').value = "";
                     document.getElementById('lstNetworkAndAmount').selectedIndex = 0;
@@ -462,7 +502,7 @@
 
                     document.getElementById("output").classList.remove("outputVisible");
                     document.getElementById("output").classList.add("outputHidden");
-                    visualContainer.style.display = 'none'; // Explicitly hide after download and clear
+                    visualContainer.style.display = 'none'; // Hide after download
                     document.getElementById("visualOutputHeader").style.display = 'none';
                     document.getElementById("outputHeader").innerHTML = 'Text Output';
 
@@ -471,9 +511,10 @@
                     alert("Sorry, an error occurred while generating the image. Check console for details.");
                     downloadButton.disabled = false;
                     downloadButton.textContent = originalButtonText;
-                    visualContainer.style.display = originalDisplay; // Revert on error
+                    // Don't necessarily hide on error, user might want to see what went wrong if possible
+                    // visualContainer.style.display = 'none';
                 });
-            }, 150); // Slightly longer delay for rendering complex styles
+            }, 150);
         }
 
         document.getElementById("footerYear").innerHTML = new Date().getFullYear();
