@@ -3,330 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>TGR EPIN Formatter - Dark Mode</title> <!-- Updated Title -->
-    <!-- Google Fonts -->
+    <title>TGR EPIN Formatter - Print-Ready Visuals</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for WhatsApp Icon (Optional, but good for a small button) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-        /* --- Dark Mode Delight Theme --- */
-        :root {
-            /* TGR Colors (Vibrant for Dark Mode) */
-            --tgr-red: #EF5350;         /* Slightly brighter red */
-            --tgr-blue: #42A5F5;        /* Slightly brighter blue */
-
-            /* Dark Mode Palette */
-            --primary-color: var(--tgr-red);
-            --secondary-color: var(--tgr-blue);
-            --accent-color: var(--tgr-blue); /* Focus Glow */
-
-            --bg-gradient-start: #1a1a1d; /* Very dark grey */
-            --bg-gradient-end: #111113;   /* Near black */
-            --card-bg: #2c2c31;          /* Dark card background */
-            --input-bg: #3a3a40;          /* Input background */
-            --input-border: #4a4a50;      /* Subtle input border */
-            --input-focus-border: var(--tgr-blue);
-            --input-focus-glow: rgba(66, 165, 245, 0.3); /* Blue glow */
-
-            --text-primary: #f5f5f5;      /* Primary light text */
-            --text-secondary: #bdbdbd;    /* Secondary grey text */
-            --text-placeholder: #757575;  /* Placeholder text */
-            --text-light: #ffffff;        /* Pure white for buttons etc */
-            --text-business: rgba(255, 255, 255, 0.6); /* Subtler white for business name */
-
-            --output-bg: #1f1f21;         /* Even darker output bg */
-            --output-text: #e0e0e0;       /* Output text */
-            --output-border: #333335;     /* Output border */
-
-            --shadow-color: rgba(0, 0, 0, 0.3); /* Darker shadow base */
-            --glow-color: rgba(66, 165, 245, 0.2); /* Subtle blue glow for card */
-
-            --success-color: #66BB6A;     /* Brighter Green */
-            --error-color: var(--tgr-red); /* Use primary red for errors */
+        :root { /* ... (keep existing :root variables) ... */
+            --tgr-red: #EF5350; --tgr-blue: #42A5F5; --primary-color: var(--tgr-red);
+            --secondary-color: var(--tgr-blue); --accent-color: var(--tgr-blue);
+            --bg-gradient-start: #1a1a1d; --bg-gradient-end: #111113; --card-bg: #2c2c31;
+            --input-bg: #3a3a40; --input-border: #4a4a50; --input-focus-border: var(--tgr-blue);
+            --input-focus-glow: rgba(66, 165, 245, 0.3); --text-primary: #f5f5f5;
+            --text-secondary: #bdbdbd; --text-placeholder: #757575; --text-light: #ffffff;
+            --text-business: rgba(255, 255, 255, 0.6); --output-bg: #1f1f21;
+            --output-text: #e0e0e0; --output-border: #333335; --shadow-color: rgba(0, 0, 0, 0.3);
+            --glow-color: rgba(66, 165, 245, 0.2); --success-color: #66BB6A;
+            --error-color: var(--tgr-red); --visual-card-bg: #ffffff;
+            --visual-card-text: #000000;
+            --visual-card-border: #888888;
+            --whatsapp-green: #25D366;
         }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        /* ... (Keep all existing base, body, typography, form, button, output, hr styles from previous version) ... */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.7;
-            color: var(--text-primary);
-            /* Dark Gradient Background */
+            font-family: 'Poppins', sans-serif; line-height: 1.7; color: var(--text-primary);
             background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-            background-attachment: fixed;
-            padding: 30px 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background-attachment: fixed; padding: 30px 0; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: background 0.3s ease;
         }
-
-        /* --- Layout & Container --- */
         .container {
-            background-color: var(--card-bg);
-            border-radius: 18px;
-            padding: 40px 50px;
+            background-color: var(--card-bg); border-radius: 18px; padding: 40px 50px; /* Default padding */
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.4), 0 0 15px var(--glow-color);
-            width: 90%;
-            max-width: 780px;
-            margin-top: 30px;
-            margin-bottom: 30px;
+            width: 90%; max-width: 780px; margin-top: 30px; margin-bottom: 30px;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
-            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08); position: relative; overflow: hidden;
         }
-
-        /* --- Typography --- */
-        .business-name { /* Style for the added business name */
-            text-align: center;
-            font-size: 0.95rem; /* Smaller than h1 */
-            color: var(--text-business); /* Subtler color */
-            font-weight: 400; /* Normal weight */
-            margin-bottom: 10px; /* Space below it */
-            letter-spacing: 1.5px; /* Elegant spacing */
-            text-transform: uppercase; /* Uppercase style */
-             opacity: 0.8;
+        .business-name {
+            text-align: center; font-size: 0.95rem; color: var(--text-business);
+            font-weight: 400; margin-bottom: 10px; letter-spacing: 1.5px;
+            text-transform: uppercase; opacity: 0.8;
         }
-
         h1.main-title {
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 40px; /* Keep margin below h1 */
-            margin-top: 0; /* Remove default top margin if any */
+            font-weight: 700; text-align: center; margin-bottom: 40px; margin-top: 0;
             font-size: 2.5rem;
             background: linear-gradient(90deg, var(--tgr-red) 0%, var(--tgr-blue) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            padding-bottom: 5px;
-            letter-spacing: 0.5px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-fill-color: transparent;
+            padding-bottom: 5px; letter-spacing: 0.5px;
         }
-
         h2.output-title {
-            font-weight: 600;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            color: var(--secondary-color);
-            font-size: 1.7rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-            text-align: left;
+            font-weight: 600; margin-top: 40px; margin-bottom: 20px;
+            color: var(--secondary-color); font-size: 1.7rem;
+            transition: color 0.3s ease, transform 0.3s ease; text-align: left;
         }
-
-        /* --- Form Elements --- */
-        .form-group {
-            margin-bottom: 30px;
-        }
-
+        .form-group { margin-bottom: 30px; }
         .form-label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 12px;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            transition: color 0.3s ease;
+            display: block; font-weight: 500; margin-bottom: 12px;
+            color: var(--text-secondary); font-size: 1rem; transition: color 0.3s ease;
         }
-        .form-group:focus-within .form-label {
-             color: var(--tgr-blue);
-        }
-
-        .form-control,
-        .form-select {
-            width: 100%;
-            padding: 15px 20px;
-            font-size: 1rem;
-            border: 1px solid var(--input-border);
-            border-radius: 12px;
-            background-color: var(--input-bg);
-            color: var(--text-primary);
+        .form-group:focus-within .form-label { color: var(--tgr-blue); }
+        .form-control, .form-select {
+            width: 100%; padding: 15px 20px; font-size: 1rem;
+            border: 1px solid var(--input-border); border-radius: 12px;
+            background-color: var(--input-bg); color: var(--text-primary);
             transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
             appearance: none;
         }
-        .form-control::placeholder {
-            color: var(--text-placeholder);
-            opacity: 1;
-        }
-        .form-control:focus,
-        .form-select:focus {
-            outline: none;
-            background-color: var(--card-bg);
+        .form-control::placeholder { color: var(--text-placeholder); opacity: 1; }
+        .form-control:focus, .form-select:focus {
+            outline: none; background-color: var(--card-bg);
             border-color: var(--input-focus-border);
             box-shadow: 0 0 0 4px var(--input-focus-glow);
         }
-
         .form-select {
              background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23bdbdbd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1.2rem center;
-            background-size: 16px 12px;
-            padding-right: 4rem;
+            background-repeat: no-repeat; background-position: right 1.2rem center;
+            background-size: 16px 12px; padding-right: 4rem;
         }
-
-        .form-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 10px;
-        }
-
-        /* --- Buttons --- */
-        .button-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 25px;
-        }
-
+        .form-text { font-size: 0.9rem; color: var(--text-secondary); margin-top: 10px; }
+        .button-group { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 25px; }
         .btn {
-            padding: 15px 35px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
+            padding: 15px 35px; font-size: 1.05rem; font-weight: 600;
+            border: none; border-radius: 12px; cursor: pointer;
             transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            flex-grow: 1;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-             color: var(--text-light);
-             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase; letter-spacing: 1px; flex-grow: 1;
+            text-align: center; position: relative; overflow: hidden;
+            color: var(--text-light); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-         .btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+        .btn::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0));
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
-            border-radius: inherit;
+            opacity: 0.5; transition: opacity 0.3s ease; border-radius: inherit;
         }
         .btn:hover::before { opacity: 1; }
-        .btn:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-        .btn:active {
-            transform: translateY(-1px) scale(0.98);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-        }
-
+        .btn:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
+        .btn:active { transform: translateY(-1px) scale(0.98); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); }
         .btn-format { background: linear-gradient(45deg, var(--tgr-red), #F06292); }
         .btn-format:hover { box-shadow: 0 8px 25px rgba(239, 83, 80, 0.3); }
         .btn-format:disabled { background: #777; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none; }
         .btn-format:disabled::before { display: none; }
-
-        .btn-copy { background: linear-gradient(45deg, var(--tgr-blue), #64B5F6); }
-        .btn-copy:hover { box-shadow: 0 8px 25px rgba(66, 165, 245, 0.3); }
-        .btn-copy:disabled { background: #555; color: #999; cursor: default; opacity: 0.8; }
-        .btn-copy:disabled::before { opacity: 0.2; }
-
-        /* --- Output Area --- */
+        .btn-copy, .btn-download-visual { background: linear-gradient(45deg, var(--tgr-blue), #64B5F6); }
+        .btn-copy:hover, .btn-download-visual:hover { box-shadow: 0 8px 25px rgba(66, 165, 245, 0.3); }
+        .btn-copy:disabled, .btn-download-visual:disabled { background: #555; color: #999; cursor: default; opacity: 0.8; }
+        .btn-copy:disabled::before, .btn-download-visual:disabled::before { opacity: 0.2; }
         #output {
-            background-color: var(--output-bg);
-            color: var(--output-text);
-            padding: 30px;
-            border-radius: 12px;
-            font-family: 'Cascadia Code', 'Fira Code', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-            font-size: 1rem;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            border: 1px solid var(--output-border);
-            margin-top: 15px;
-            min-height: 200px;
+            background-color: var(--output-bg); color: var(--output-text); padding: 30px;
+            border-radius: 12px; font-family: 'Cascadia Code', 'Fira Code', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 1rem; white-space: pre-wrap; overflow-wrap: break-word;
+            border: 1px solid var(--output-border); margin-top: 15px; min-height: 200px;
             transition: opacity 0.6s ease-out, transform 0.6s ease-out, max-height 0.7s ease-out, padding 0.6s ease, margin 0.6s ease;
-            overflow-y: auto;
-            max-height: 550px;
-            opacity: 0; /* Start hidden */
-            transform: translateY(20px); /* Start slightly lower */
+            overflow-y: auto; max-height: 550px; opacity: 0; transform: translateY(20px);
             line-height: 1.65;
         }
         #output.outputVisible { opacity: 1; transform: translateY(0); }
         #output.outputHidden { opacity: 0; max-height: 0; min-height: 0; padding-top: 0; padding-bottom: 0; border-width: 0 1px; margin-top: 0; transform: translateY(20px); }
-
-        /* --- Pulsing Animation for Success --- */
         .pulse-success { animation: pulse-success-animation 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse-success-animation {
-            0%, 100% { color: var(--success-color); transform: scale(1); }
-            50% { color: #81C784; transform: scale(1.05); }
-        }
+        @keyframes pulse-success-animation { 0%, 100% { color: var(--success-color); transform: scale(1); } 50% { color: #81C784; transform: scale(1.05); } }
+        hr { border: none; height: 1px; background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent); margin: 40px 0; }
 
-        /* --- Footer --- */
+
+        /* --- VISUAL EPIN Cards --- */
+        #visualOutputContainer {
+            margin-top: 20px; background-color: var(--visual-card-bg); padding: 5px 8px;
+            border-radius: 4px; display: none; width: fit-content; min-width: 450px;
+            margin-left: auto; margin-right: auto;
+        }
+        .epin-visual-card {
+            display: flex; align-items: center; color: var(--visual-card-text);
+            font-family: 'Roboto', Arial, sans-serif; border-bottom: 2px dashed var(--visual-card-border);
+            padding-bottom: 5px; margin-bottom: 5px;
+        }
+        .epin-visual-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .epin-visual-card .logo-container {
+            width: 100px; margin-right: 2px; flex-shrink: 0; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .epin-visual-card .logo-container img { max-width: 100%; height: auto; max-height: 75px; display: block; }
+        .epin-visual-card .details { flex-grow: 1; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .epin-visual-card .company-name-visual, .epin-visual-card .network-amount-visual,
+        .epin-visual-card .advert-visual, .epin-visual-card .extra-info-visual {
+            font-weight: 700; font-size: 30px; margin-bottom: 0; word-break: break-word;
+        }
+        .epin-visual-card .pin-visual, .epin-visual-card .load-info-visual {
+            font-weight: 700; font-size: 36px; margin-top: 1px; margin-bottom: 1px; word-break: break-word;
+        }
+        .epin-visual-card .pin-visual span { margin-right: 6px; }
+
+
+        /* --- Contact & Footer Area --- */
+        .contact-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background-color: rgba(0,0,0,0.1); /* Subtle background for this section */
+            border-radius: 8px;
+        }
+        .contact-advert {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .btn-whatsapp {
+            display: inline-flex; /* For icon and text alignment */
+            align-items: center;
+            background-color: var(--whatsapp-green);
+            color: white;
+            padding: 8px 15px; /* Smaller padding */
+            border-radius: 20px; /* Pill shape */
+            text-decoration: none;
+            font-size: 0.9rem; /* Smaller font */
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .btn-whatsapp:hover {
+            background-color: #1EBE57; /* Darker WhatsApp green */
+            transform: translateY(-1px);
+        }
+        .btn-whatsapp i { /* Font Awesome icon */
+            margin-right: 8px;
+            font-size: 1.1rem; /* Slightly larger icon */
+        }
         .footer {
             text-align: center;
-            margin-top: 60px;
+            margin-top: 20px; /* Reduced margin-top as contact section adds space */
+            padding-bottom: 20px; /* Ensure space at very bottom */
             font-size: 0.9rem;
             color: var(--text-secondary);
         }
         .footer a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-weight: 500;
+            color: var(--secondary-color); text-decoration: none; font-weight: 500;
             transition: color 0.3s ease, text-shadow 0.3s ease;
         }
-        .footer a:hover {
-            color: var(--primary-color);
-            text-shadow: 0 0 5px rgba(239, 83, 80, 0.5);
-        }
+        .footer a:hover { color: var(--primary-color); text-shadow: 0 0 5px rgba(239, 83, 80, 0.5); }
 
-        hr {
-            border: none;
-            height: 1px;
-            background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
-            margin: 40px 0;
-        }
 
-        /* --- Responsive Design --- */
+        /* --- Responsive Adjustments --- */
         @media (max-width: 768px) {
-            .container { width: 95%; padding: 35px 30px; }
+            .container {
+                padding: 30px 25px; /* INCREASED padding for more space on medium screens */
+            }
             .business-name { font-size: 0.9rem; letter-spacing: 1px;}
             h1.main-title { font-size: 2.1rem; }
             h2.output-title { font-size: 1.5rem; }
             .button-group { flex-direction: column; gap: 15px; }
             .btn { width: 100%; }
+            .contact-section { margin-left: -25px; margin-right: -25px; border-radius: 0;} /* Extend to edges */
+
         }
         @media (max-width: 480px) {
-            body { padding: 20px 0; }
-            .container { padding: 30px 20px; border-radius: 15px; }
+            .container {
+                padding: 20px 15px; /* FURTHER INCREASED padding for more space on small screens */
+                border-radius: 12px;
+            }
             .business-name { font-size: 0.85rem; }
-            h1.main-title { font-size: 1.9rem; }
-            h2.output-title { font-size: 1.4rem; }
-            .form-control, .form-select, .btn { font-size: 0.95rem; padding: 14px 18px;}
-            #output { font-size: 0.9rem; padding: 25px;}
+            h1.main-title { font-size: 1.8rem; } /* Reduced further for small screens */
+            h2.output-title { font-size: 1.3rem; }
+            .form-control, .form-select { font-size: 0.9rem; padding: 12px 15px;} /* Slightly smaller form controls */
+            .btn { font-size: 0.9rem; }
+            #output { font-size: 0.85rem; padding: 20px;}
+            .contact-section { margin-left: -15px; margin-right: -15px; padding: 10px;}
+            .contact-advert {font-size: 0.9rem;}
+            .btn-whatsapp { padding: 7px 12px; font-size: 0.85rem;}
         }
 
     </style>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PC9CR6XD');</script>
-    <!-- End Google Tag Manager -->
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC9CR6XD"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC9CR6XD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="container">
-        <!-- Added Business Name Here -->
         <p class="business-name">Dammie Optimus Solutions</p>
-
-        <!-- Updated Main Title Here -->
         <h1 class="main-title">TGR EPIN Formatter</h1>
 
         <div class="form-group">
@@ -339,43 +252,46 @@
             <label for="lstNetworkAndAmount" class="form-label">Network and Amount</label>
             <select class="form-select" id="lstNetworkAndAmount" aria-label="Select Network and Amount">
                 <option selected disabled value="">-- Select Network & Amount --</option>
-                <option value="A|100">AIRTEL ₦100</option>
-                <option value="A|200">AIRTEL ₦200</option>
-                <option value="A|500">AIRTEL ₦500</option>
-                <option value="M|100">MTN ₦100</option>
-                <option value="M|200">MTN ₦200</option>
-                <option value="M|500">MTN ₦500</option>
-                <option value="G|100">GLO ₦100</option>
-                <option value="G|200">GLO ₦200</option>
-                <option value="G|500">GLO ₦500</option>
-                <option value="N|100">9MOBILE ₦100</option>
-                <option value="N|200">9MOBILE ₦200</option>
-                <option value="N|500">9MOBILE ₦500</option>
-                <option value="E|100">ETISALAT ₦100 (Legacy)</option>
-                <option value="E|200">ETISALAT ₦200 (Legacy)</option>
-                <option value="E|500">ETISALAT ₦500 (Legacy)</option>
+                <option value="A|100">AIRTEL ₦100</option> <option value="A|200">AIRTEL ₦200</option> <option value="A|500">AIRTEL ₦500</option>
+                <option value="M|100">MTN ₦100</option> <option value="M|200">MTN ₦200</option> <option value="M|500">MTN ₦500</option>
+                <option value="G|100">GLO ₦100</option> <option value="G|200">GLO ₦200</option> <option value="G|500">GLO ₦500</option>
+                <option value="N|100">9MOBILE ₦100</option> <option value="N|200">9MOBILE ₦200</option> <option value="N|500">9MOBILE ₦500</option>
+                <option value="E|100">ETISALAT ₦100 (Legacy)</option> <option value="E|200">ETISALAT ₦200 (Legacy)</option> <option value="E|500">ETISALAT ₦500 (Legacy)</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="txtEpinDetails" class="form-label">EPIN Text (Paste Here)</label>
             <textarea class="form-control" id="txtEpinDetails" rows="6" placeholder="Paste your raw EPIN text here, like: 1234... Airtel 9876... Airtel"></textarea>
-            <div id="epinTextHelp" class="form-text">
-                Ensure the network name (e.g., AIRTEL, MTN, GLO, 9MOBILE) follows each PIN.
-            </div>
+            <div id="epinTextHelp" class="form-text">Ensure the network name (e.g., AIRTEL, MTN, GLO, 9MOBILE) follows each PIN.</div>
         </div>
 
-        <!-- Button Group -->
         <div class="button-group">
             <button type="button" class="btn btn-format" id="btnFormatEpins" onclick="formatEpins()">Format EPINs</button>
-            <button type="button" class="btn btn-copy" id="btnCopyOutputContent" onclick="copyOutputContent()">Copy Output</button>
+            <button type="button" class="btn btn-copy" id="btnCopyOutputContent" onclick="copyOutputContent()">Copy Text</button>
+            <button type="button" class="btn btn-download-visual" id="btnDownloadVisual" onclick="downloadVisualOutput()">Download Visuals</button>
         </div>
 
         <hr />
 
-        <h2 id="outputHeader" class="output-title">Output</h2>
+        <h2 id="outputHeader" class="output-title">Text Output</h2>
         <pre id="output" class="outputHidden"></pre>
 
+        <h2 id="visualOutputHeader" class="output-title" style="display:none;">Visual Output (for Download)</h2>
+        <div id="visualOutputContainer" class="outputHidden">
+            <!-- Visual EPIN cards will be injected here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- NEW Contact Section -->
+    <div class="contact-section">
+        <p class="contact-advert">
+            Need a custom application like this, or a Bluetooth thermal printer for your recharge card printing business?
+            Get in touch for a solution tailored to your needs!
+        </p>
+        <a href="https://wa.me/2348180419229?text=Hello%2C%20I'm%20interested%20in%20your%20custom%20app%2Fprinter%20services." class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i> Contact Dammie Optimus on WhatsApp
+        </a>
     </div>
 
     <footer class="footer">
@@ -383,9 +299,14 @@
     </footer>
 
     <script>
-        // --- START OF JavaScript Logic (No changes needed here for this request) ---
+        // --- JavaScript (No changes to logic needed for these CSS adjustments) ---
         const networkProviderDic = { "A": "AIRTEL", "N": "9MOBILE", "9": "9MOBILE", "E": "ETISALAT", "M": "MTN", "G": "GLO" };
         const loadCodeForProviderDic = { "A": "*311*PIN#", "N": "*311*PIN#", "9": "*311*PIN#", "E": "*311*PIN#", "M": "*311*PIN#", "G": "*203*3*PIN#" };
+        const networkLogos = {
+            "A": "logos/airtel-logo.png", "M": "logos/mtn-logo.png",
+            "G": "logos/glo-logo.png", "N": "logos/9mobile-logo.png",
+            "E": "logos/9mobile-logo.png"
+        };
 
         function getWords(text) { if (!text) return []; return text.toUpperCase().match(/[a-zA-Z0-9]+/g) || []; }
 
@@ -395,17 +316,22 @@
             const networkAndAmountElem = document.getElementById('lstNetworkAndAmount');
             const outputElem = document.getElementById("output");
             const outputHeaderElem = document.getElementById("outputHeader");
+            const visualOutputContainer = document.getElementById("visualOutputContainer");
+            const visualOutputHeader = document.getElementById("visualOutputHeader");
             const formatButton = document.getElementById('btnFormatEpins');
             const copyButton = document.getElementById('btnCopyOutputContent');
+            const downloadVisualButton = document.getElementById('btnDownloadVisual');
 
             if (!companyNameElem.value.trim()) { alert("Please enter a Company Name."); companyNameElem.focus(); return; }
             if (!networkAndAmountElem.value) { alert("Please select a Network and Amount."); networkAndAmountElem.focus(); return; }
             if (!epinListStringElem.value.trim()) { alert("Please paste the EPIN text."); epinListStringElem.focus(); return; }
 
             outputHeaderElem.classList.remove('pulse-success');
-            outputElem.classList.remove("outputVisible");
-            outputElem.classList.add("outputHidden");
-            outputHeaderElem.style.color = 'var(--secondary-color)';
+            outputElem.classList.remove("outputVisible"); outputElem.classList.add("outputHidden");
+            visualOutputContainer.innerHTML = '';
+            visualOutputContainer.style.display = 'none';
+            visualOutputHeader.style.display = 'none'; outputHeaderElem.style.color = 'var(--secondary-color)';
+            outputHeaderElem.innerHTML = 'Text Output';
 
             let numberOfDashes = 40, companyName = "", advertText = "";
             const companyInput = companyNameElem.value.trim();
@@ -433,85 +359,167 @@
                 }
             }
 
-            if (epinList.length === 0) {
-                outputElem.innerHTML = `ERROR:\nNo valid ${selectedNetworkName} EPINs found (15-17 digits expected before network name).\n\nPlease check:\n1. Correct Network/Amount selected.\n2. EPIN text format: 'PIN ${selectedNetworkName} PIN ${selectedNetworkName} ...'.\n3. PINs are numbers only.`;
+            if (epinList.length === 0) { /* ... error handling same as before ... */
+                const errorMsg = `ERROR:\nNo valid ${selectedNetworkName} EPINs found (15-17 digits expected before network name).\n\nPlease check:\n1. Correct Network/Amount selected.\n2. EPIN text format: 'PIN ${selectedNetworkName} PIN ${selectedNetworkName} ...'.\n3. PINs are numbers only.`;
+                outputElem.innerHTML = errorMsg;
                 outputHeaderElem.innerHTML = "Extraction Error";
                 outputHeaderElem.style.color = 'var(--error-color)';
                 formatButton.disabled = false;
                 outputElem.classList.remove("outputHidden");
-                outputElem.classList.add("outputVisible");
+                requestAnimationFrame(() => requestAnimationFrame(() => outputElem.classList.add("outputVisible")));
                 outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                downloadVisualButton.disabled = true;
                 return;
             }
+
 
             let epinFinalString = "";
             const futureDate = new Date(Date.now() + 6 * 24 * 60 * 60 * 1000);
             const formattedDate = futureDate.toLocaleString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
-            for (let index = 0; index < epinList.length; index++) {
-                const currentEpin = epinList[index];
+
+            epinList.forEach((currentEpin, index) => {
                 const epinWithDashes = currentEpin.match(/.{1,4}/g)?.join('-') || currentEpin;
-                epinFinalString += `${companyName.toUpperCase()}\n`;
-                epinFinalString += `${selectedNetworkName} ₦${cardAmount}\n`;
-                epinFinalString += `PIN: ${epinWithDashes}\n`;
-                epinFinalString += `HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}\n`;
+                let textCard = `${companyName.toUpperCase()}\n`;
+                textCard += `${selectedNetworkName} ₦${cardAmount}\n`;
+                textCard += `PIN: ${epinWithDashes}\n`;
+                textCard += `HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}\n`;
+
+                const visualCard = document.createElement('div');
+                visualCard.className = 'epin-visual-card';
+                const logoContainer = document.createElement('div');
+                logoContainer.className = 'logo-container';
+                const logoImg = document.createElement('img');
+                logoImg.src = networkLogos[networkCode] || 'logos/default-logo.png';
+                logoImg.alt = `${selectedNetworkName} Logo`;
+                logoContainer.appendChild(logoImg);
+                visualCard.appendChild(logoContainer);
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'details';
+                detailsDiv.innerHTML += `<div class="company-name-visual">${companyName.toUpperCase()}</div>`;
+                detailsDiv.innerHTML += `<div class="network-amount-visual">${selectedNetworkName} ₦${cardAmount}</div>`;
+                detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span>${epinWithDashes}</div>`;
+                detailsDiv.innerHTML += `<div class="load-info-visual">HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}</div>`;
+
                 if (networkCode === "G") {
-                    epinFinalString += `e.g. *203*3*${currentEpin}#\n`;
-                    epinFinalString += `USE BEFORE ${formattedDate}\n`;
+                    const gloExtraText = `e.g. *203*3*${currentEpin}#\nUSE BEFORE ${formattedDate}`;
+                    textCard += gloExtraText + '\n';
+                    detailsDiv.innerHTML += `<div class="extra-info-visual">e.g. *203*3*${currentEpin}#</div>`;
+                    detailsDiv.innerHTML += `<div class="extra-info-visual">USE BEFORE ${formattedDate}</div>`;
                 }
-                if (advertText) epinFinalString += `${advertText.toUpperCase()}\n`;
-                if (index < epinList.length - 1) epinFinalString += "-".repeat(numberOfDashes) + "\n";
-            }
+                if (advertText) {
+                    textCard += `${advertText.toUpperCase()}\n`;
+                    detailsDiv.innerHTML += `<div class="advert-visual">${advertText.toUpperCase()}</div>`;
+                }
+                visualCard.appendChild(detailsDiv);
+                visualOutputContainer.appendChild(visualCard);
+
+                if (index < epinList.length - 1) {
+                    textCard += "-".repeat(numberOfDashes) + "\n";
+                }
+                epinFinalString += textCard;
+            });
 
             outputElem.innerHTML = epinFinalString.trim();
-            outputHeaderElem.innerHTML = `Formatted ${epinList.length} EPIN(s) - Ready to Copy!`;
-            formatButton.disabled = true;
-            copyButton.disabled = false;
-
+            outputHeaderElem.innerHTML = `Text Output: ${epinList.length} EPIN(s) Formatted`;
+            visualOutputHeader.innerHTML = `Visual Output: ${epinList.length} EPIN(s) Formatted`;
+            formatButton.disabled = true; copyButton.disabled = false; downloadVisualButton.disabled = false;
             outputElem.classList.remove("outputHidden");
-            requestAnimationFrame(() => { requestAnimationFrame(() => { outputElem.classList.add("outputVisible"); }); });
+            requestAnimationFrame(() => requestAnimationFrame(() => outputElem.classList.add("outputVisible")));
+
+            visualOutputContainer.style.display = 'block'; // Make visual output visible on screen
+            visualOutputHeader.style.display = 'block';
+
             outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        function copyOutputContent() {
-            const output = document.getElementById("output");
+        function copyOutputContent() { /* ... same as before ... */
+             const output = document.getElementById("output");
             const outputHeaderElem = document.getElementById("outputHeader");
             const copyButton = document.getElementById('btnCopyOutputContent');
-            const formatButton = document.getElementById('btnFormatEpins');
 
-            if (!output.textContent || !output.classList.contains("outputVisible")) { console.warn("No visible output content to copy."); return; }
+            if (!output.textContent || !output.classList.contains("outputVisible")) { console.warn("No visible text output to copy."); return; }
 
             navigator.clipboard.writeText(output.textContent)
                 .then(() => {
-                    outputHeaderElem.innerHTML = "Output Copied Successfully!";
+                    outputHeaderElem.innerHTML = "Text Output Copied Successfully!";
                     outputHeaderElem.style.color = 'var(--success-color)';
                     outputHeaderElem.classList.add('pulse-success');
                     const originalButtonText = copyButton.textContent;
-                    copyButton.textContent = "Copied ✓";
-                    copyButton.disabled = true;
-                    document.getElementById('txtCompanyName').value = "";
-                    document.getElementById('lstNetworkAndAmount').selectedIndex = 0;
-                    document.getElementById('txtEpinDetails').value = "";
-                    formatButton.disabled = false;
-                    setTimeout(() => { output.classList.remove("outputVisible"); output.classList.add("outputHidden"); }, 2500);
+                    copyButton.textContent = "Text Copied ✓";
                     setTimeout(() => {
-                        outputHeaderElem.innerHTML = 'Output';
+                        outputHeaderElem.innerHTML = 'Text Output';
                         outputHeaderElem.style.color = 'var(--secondary-color)';
                         outputHeaderElem.classList.remove('pulse-success');
                         copyButton.textContent = originalButtonText;
-                    }, 5000);
+                    }, 3000);
                 })
                 .catch(err => {
                     console.error('Failed to copy text: ', err);
-                    outputHeaderElem.innerHTML = "Copy Failed! Please Copy Manually.";
+                    outputHeaderElem.innerHTML = "Text Copy Failed! Please Copy Manually.";
                     outputHeaderElem.style.color = 'var(--error-color)';
                     outputHeaderElem.classList.remove('pulse-success');
                 });
         }
 
+        function downloadVisualOutput() {
+            const visualContainer = document.getElementById('visualOutputContainer');
+            const downloadButton = document.getElementById('btnDownloadVisual');
+            const originalButtonText = downloadButton.textContent;
+
+            if (!visualContainer || visualContainer.children.length === 0 || visualContainer.style.display === 'none') {
+                alert("Please format EPINs first to generate visual output.");
+                return;
+            }
+            downloadButton.disabled = true;
+            downloadButton.textContent = "Generating...";
+            // Ensure it's block for capture (should be already if formatEpins ran successfully)
+            visualContainer.style.display = 'block';
+
+            setTimeout(() => {
+                const options = {
+                    backgroundColor: getComputedStyle(visualContainer).backgroundColor || "#ffffff",
+                    scale: window.devicePixelRatio * 3,
+                    useCORS: true,
+                    logging: false,
+                    allowTaint: true
+                };
+
+                html2canvas(visualContainer, options).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'formatted-epins-visual.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    downloadButton.disabled = false;
+                    downloadButton.textContent = originalButtonText;
+
+                    document.getElementById('txtCompanyName').value = "";
+                    document.getElementById('lstNetworkAndAmount').selectedIndex = 0;
+                    document.getElementById('txtEpinDetails').value = "";
+                    document.getElementById('btnFormatEpins').disabled = false;
+                    document.getElementById('btnCopyOutputContent').disabled = true;
+                    downloadButton.disabled = true;
+
+                    document.getElementById("output").classList.remove("outputVisible");
+                    document.getElementById("output").classList.add("outputHidden");
+                    visualContainer.style.display = 'none'; // Hide after download
+                    document.getElementById("visualOutputHeader").style.display = 'none';
+                    document.getElementById("outputHeader").innerHTML = 'Text Output';
+
+                }).catch(err => {
+                    console.error("Error generating image with html2canvas:", err);
+                    alert("Sorry, an error occurred while generating the image. Check console for details.");
+                    downloadButton.disabled = false;
+                    downloadButton.textContent = originalButtonText;
+                    // Don't necessarily hide on error, user might want to see what went wrong if possible
+                    // visualContainer.style.display = 'none';
+                });
+            }, 150);
+        }
+
         document.getElementById("footerYear").innerHTML = new Date().getFullYear();
         document.getElementById('btnCopyOutputContent').disabled = true;
-
-        // --- END OF JavaScript Logic ---
+        document.getElementById('btnDownloadVisual').disabled = true;
     </script>
 </body>
 </html>
