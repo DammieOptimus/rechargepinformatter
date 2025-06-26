@@ -322,10 +322,12 @@
             const copyButton = document.getElementById('btnCopyOutputContent');
             const downloadVisualButton = document.getElementById('btnDownloadVisual');
 
+            // --- Input Validation ---
             if (!companyNameElem.value.trim()) { alert("Please enter a Company Name."); companyNameElem.focus(); return; }
             if (!networkAndAmountElem.value) { alert("Please select a Network and Amount."); networkAndAmountElem.focus(); return; }
             if (!epinListStringElem.value.trim()) { alert("Please paste the EPIN text."); epinListStringElem.focus(); return; }
 
+            // --- Prepare for Output ---
             outputHeaderElem.classList.remove('pulse-success');
             outputElem.classList.remove("outputVisible"); outputElem.classList.add("outputHidden");
             visualOutputContainer.innerHTML = '';
@@ -333,21 +335,49 @@
             visualOutputHeader.style.display = 'none'; outputHeaderElem.style.color = 'var(--secondary-color)';
             outputHeaderElem.innerHTML = 'Text Output';
 
-            let numberOfDashes = 40, companyName = "", advertText = "";
+            // --- Parse Company Name ---
+            let numberOfDashes = 40;
+            let companyName = "";
+            let advertText = "";
+            let bareBonesMode = false; // NEW: Flag for barebones text output
+
             const companyInput = companyNameElem.value.trim();
             const parts = companyInput.split("|").map(part => part.trim());
+
             companyName = parts[0] || "";
+
             if (parts.length === 2) {
-                if (!isNaN(parseInt(parts[1])) && parseInt(parts[1]) > 0) numberOfDashes = parseInt(parts[1]);
-                else if (parts[1]) advertText = parts[1];
+                const secondPart = parts[1];
+                if (secondPart.toUpperCase().endsWith("B") && !isNaN(parseInt(secondPart.slice(0, -1)))) {
+                    numberOfDashes = parseInt(secondPart.slice(0, -1));
+                    bareBonesMode = true;
+                } else if (!isNaN(parseInt(secondPart))) {
+                    numberOfDashes = parseInt(secondPart);
+                } else if (secondPart) {
+                    advertText = secondPart;
+                }
             } else if (parts.length >= 3) {
                 if (parts[1]) advertText = parts[1];
-                if (!isNaN(parseInt(parts[2])) && parseInt(parts[2]) > 0) numberOfDashes = parseInt(parts[2]);
+                const thirdPart = parts[2];
+                if (thirdPart.toUpperCase().endsWith("B") && !isNaN(parseInt(thirdPart.slice(0, -1)))) {
+                    numberOfDashes = parseInt(thirdPart.slice(0, -1));
+                    bareBonesMode = true;
+                } else if (!isNaN(parseInt(thirdPart))) {
+                    numberOfDashes = parseInt(thirdPart);
+                }
             }
             if (isNaN(numberOfDashes) || numberOfDashes < 10 || numberOfDashes > 100) {
-                numberOfDashes = 40; console.warn("Invalid number of dashes, reset to 40.");
+                numberOfDashes = 40;
+                if (!bareBonesMode) console.warn("Invalid number of dashes, reset to 40.");
+                // If bareBonesMode was triggered by an invalid number (e.g., "XB"), it will reset to 40B
+            }
+            if (bareBonesMode) { // If barebones, we don't want company name or advert in text output
+                // companyName = ""; // Keep companyName for visual cards
+                // advertText = ""; // Keep advertText for visual cards
             }
 
+
+            // --- Extract EPINs ---
             const epinLongText = epinListStringElem.value;
             const [networkCode, cardAmount] = networkAndAmountElem.value.split("|");
             const selectedNetworkName = networkProviderDic[networkCode];
@@ -359,7 +389,8 @@
                 }
             }
 
-            if (epinList.length === 0) { /* ... error handling same as before ... */
+            // --- Handle No EPINs Found ---
+            if (epinList.length === 0) {
                 const errorMsg = `ERROR:\nNo valid ${selectedNetworkName} EPINs found (15-17 digits expected before network name).\n\nPlease check:\n1. Correct Network/Amount selected.\n2. EPIN text format: 'PIN ${selectedNetworkName} PIN ${selectedNetworkName} ...'.\n3. PINs are numbers only.`;
                 outputElem.innerHTML = errorMsg;
                 outputHeaderElem.innerHTML = "Extraction Error";
@@ -372,18 +403,39 @@
                 return;
             }
 
-
-            let epinFinalString = "";
+            // --- Build Output Strings ---
+            let epinFinalString = ""; // For text output
             const futureDate = new Date(Date.now() + 6 * 24 * 60 * 60 * 1000);
             const formattedDate = futureDate.toLocaleString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
 
             epinList.forEach((currentEpin, index) => {
                 const epinWithDashes = currentEpin.match(/.{1,4}/g)?.join('-') || currentEpin;
-                let textCard = `${companyName.toUpperCase()}\n`;
-                textCard += `${selectedNetworkName} ₦${cardAmount}\n`;
-                textCard += `PIN: ${epinWithDashes}\n`;
-                textCard += `HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}\n`;
 
+                // --- Build Text Card (Conditional based on bareBonesMode) ---
+                let textCard = "";
+                if (bareBonesMode) {
+                    textCard += `${selectedNetworkName} ₦${cardAmount}\n`;
+                    textCard += `${epinWithDashes}\n`;
+                } else {
+                    textCard += `${companyName.toUpperCase()}\n`;
+                    textCard += `${selectedNetworkName} ₦${cardAmount}\n`;
+                    textCard += `PIN: ${epinWithDashes}\n`;
+                    textCard += `HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}\n`;
+                    if (networkCode === "G") {
+                        textCard += `e.g. *203*3*${currentEpin}#\nUSE BEFORE ${formattedDate}\n`;
+                    }
+                    if (advertText) {
+                        textCard += `${advertText.toUpperCase()}\n`;
+                    }
+                }
+                // Add separator to text card (always, unless last item)
+                if (index < epinList.length - 1) {
+                    textCard += "-".repeat(numberOfDashes) + "\n";
+                }
+                epinFinalString += textCard;
+
+
+                // --- Build Visual Card (ALWAYS FULL DETAILS) ---
                 const visualCard = document.createElement('div');
                 visualCard.className = 'epin-visual-card';
                 const logoContainer = document.createElement('div');
@@ -393,40 +445,40 @@
                 logoImg.alt = `${selectedNetworkName} Logo`;
                 logoContainer.appendChild(logoImg);
                 visualCard.appendChild(logoContainer);
+
                 const detailsDiv = document.createElement('div');
                 detailsDiv.className = 'details';
+                // Visual card ALWAYS shows company name
                 detailsDiv.innerHTML += `<div class="company-name-visual">${companyName.toUpperCase()}</div>`;
                 detailsDiv.innerHTML += `<div class="network-amount-visual">${selectedNetworkName} ₦${cardAmount}</div>`;
                 detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span>${epinWithDashes}</div>`;
                 detailsDiv.innerHTML += `<div class="load-info-visual">HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}</div>`;
 
                 if (networkCode === "G") {
-                    const gloExtraText = `e.g. *203*3*${currentEpin}#\nUSE BEFORE ${formattedDate}`;
-                    textCard += gloExtraText + '\n';
                     detailsDiv.innerHTML += `<div class="extra-info-visual">e.g. *203*3*${currentEpin}#</div>`;
                     detailsDiv.innerHTML += `<div class="extra-info-visual">USE BEFORE ${formattedDate}</div>`;
                 }
+                // Visual card ALWAYS shows advert text if present
                 if (advertText) {
-                    textCard += `${advertText.toUpperCase()}\n`;
                     detailsDiv.innerHTML += `<div class="advert-visual">${advertText.toUpperCase()}</div>`;
                 }
                 visualCard.appendChild(detailsDiv);
                 visualOutputContainer.appendChild(visualCard);
-
-                if (index < epinList.length - 1) {
-                    textCard += "-".repeat(numberOfDashes) + "\n";
-                }
-                epinFinalString += textCard;
+                // --- End Visual Card ---
             });
 
+            // --- Display Output ---
             outputElem.innerHTML = epinFinalString.trim();
             outputHeaderElem.innerHTML = `Text Output: ${epinList.length} EPIN(s) Formatted`;
+            if (bareBonesMode) {
+                outputHeaderElem.innerHTML += " (Barebones Mode)";
+            }
             visualOutputHeader.innerHTML = `Visual Output: ${epinList.length} EPIN(s) Formatted`;
             formatButton.disabled = true; copyButton.disabled = false; downloadVisualButton.disabled = false;
             outputElem.classList.remove("outputHidden");
             requestAnimationFrame(() => requestAnimationFrame(() => outputElem.classList.add("outputVisible")));
 
-            visualOutputContainer.style.display = 'block'; // Make visual output visible on screen
+            visualOutputContainer.style.display = 'block';
             visualOutputHeader.style.display = 'block';
 
             outputElem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
