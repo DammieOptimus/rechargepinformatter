@@ -426,7 +426,7 @@
                 let textCard = "";
                 if (bareBonesMode) {
                     textCard += `${selectedNetworkName} ₦${cardAmount}\n`;
-                    textCard += epinWithDashes + (networkCode === "G" ? " *203*3*PIN#\n" : " *311*PIN#\n"); //textCard += `${epinWithDashes}\n`;
+                    textCard += epinWithDashes + (networkCode === "G" ? ` *203*3*PIN# USE BEFORE ${formattedDate}\n` : " *311*PIN#\n"); //textCard += `${epinWithDashes}\n`;
                 } else {
                     textCard += `${companyName.toUpperCase()}\n`;
                     textCard += `${selectedNetworkName} ₦${cardAmount}\n`;
