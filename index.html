@@ -312,7 +312,7 @@
     <script>
         // --- JavaScript (No changes to logic needed for these CSS adjustments) ---
         const networkProviderDic = { "A": "AIRTEL", "N": "9MOBILE", "9": "9MOBILE", "E": "ETISALAT", "M": "MTN", "G": "GLO" };
-        const loadCodeForProviderDic = { "A": "*311*PIN#", "N": "*311*PIN#", "9": "*311*PIN#", "E": "*311*PIN#", "M": "*311*PIN#", "G": "*203*3*PIN#" };
+        const loadCodeForProviderDic = { "A": "*311*PIN#", "N": "*311*PIN#", "9": "*311*PIN#", "E": "*311*PIN#", "M": "*311*PIN#", "G": "*311*PIN#" };
         const networkLogos = {
             "A": "logos/airtel-logo.png", "M": "logos/mtn-logo.png",
             "G": "logos/glo-logo.png", "N": "logos/9mobile-logo.png",
@@ -426,15 +426,19 @@
                 let textCard = "";
                 if (bareBonesMode) {
                     textCard += `${selectedNetworkName} ₦${cardAmount}\n`;
-                    textCard += epinWithDashes + (networkCode === "G" ? ` *203*3*PIN# USE BEFORE ${formattedDate}\n` : " *311*PIN#\n"); //textCard += `${epinWithDashes}\n`;
+                    textCard += epinWithDashes + " *311*PIN#\n"; //(networkCode === "G" ? ` *203*3*PIN# USE BEFORE ${formattedDate}\n` : " *311*PIN#\n"); //textCard += `${epinWithDashes}\n`;
                 } else {
                     textCard += `${companyName.toUpperCase()}\n`;
                     textCard += `${selectedNetworkName} ₦${cardAmount}\n`;
                     textCard += `PIN: ${epinWithDashes}\n`;
                     textCard += `HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}\n`;
+                    
+                    /*
                     if (networkCode === "G") {
                         textCard += `e.g. *203*3*${currentEpin}#\nUSE BEFORE ${formattedDate}\n`;
                     }
+                    */
+                    
                     if (advertText) {
                         textCard += `${advertText.toUpperCase()}\n`;
                     }
@@ -465,10 +469,13 @@
                 detailsDiv.innerHTML += `<div class="pin-visual"><span>PIN:</span>${epinWithDashes}</div>`;
                 detailsDiv.innerHTML += `<div class="load-info-visual">HOW TO LOAD: ${loadCodeForProviderDic[networkCode]}</div>`;
 
+                /*
                 if (networkCode === "G") {
                     detailsDiv.innerHTML += `<div class="extra-info-visual">e.g. *203*3*${currentEpin}#</div>`;
                     detailsDiv.innerHTML += `<div class="extra-info-visual">USE BEFORE ${formattedDate}</div>`;
                 }
+                */
+                
                 // Visual card ALWAYS shows advert text if present
                 if (advertText) {
                     detailsDiv.innerHTML += `<div class="advert-visual">${advertText.toUpperCase()}</div>`;
