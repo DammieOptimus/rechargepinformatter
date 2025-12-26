@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimus Smart EPIN Formatter</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Image Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0f0c29;
+            --bg-gradient: linear-gradient(301deg, #0f0c29, #302b63, #24243e);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-color: #00d2ff;
+            --accent-gradient: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- Form Elements --- */
+        .grid-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* --- Buttons --- */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--glass-border);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button i {
+            margin-right: 8px;
+        }
+
+        /* --- Output Section --- */
+        .output-section {
+            margin-top: 40px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 30px;
+            display: none; /* Hidden by default */
+        }
+
+        .output-section.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .output-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            white-space: pre-wrap;
+            color: #e0e0e0;
+            border: 1px solid var(--glass-border);
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+        }
+
+        /* --- Visual Card Generation (Hidden from view, used for IMG capture) --- */
+        #visual-container-wrapper {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+        }
+
+        .visual-card {
+            width: 500px; /* Fixed width for consistent printing */
+            background: #fff;
+            color: #000;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-family: 'Fira Code', monospace;
+            border-bottom: 2px dashed #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .visual-logo {
+            width: 80px;
+            height: 80px;
+            background: #eee;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 8px;
+            font-family: sans-serif;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .visual-logo.MTN { background: #FFCC00; color: #000; }
+        .visual-logo.AIRTEL { background: #FF0000; color: #fff; }
+        .visual-logo.GLO { background: #009933; color: #fff; }
+        .visual-logo.MOBILE { background: #006400; color: #fff; } /* 9Mobile */
+
+        .visual-details {
+            flex: 1;
+        }
+        
+        .v-company { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; text-transform: uppercase;}
+        .v-network { font-size: 1rem; margin-bottom: 5px; }
+        .v-pin { font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; margin: 5px 0;}
+        .v-load { font-size: 0.9rem; color: #333; }
+
+        /* --- Toast Notification --- */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid var(--accent-color);
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .grid-row { grid-template-columns: 1fr; }
+            h1 { font-size: 1.8rem; }
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Smart EPIN Formatter</h1>
+        <div class="subtitle">Convert raw data into beautiful, printable vouchers</div>
+    </header>
+
+    <div class="grid-row">
+        <div class="form-group">
+            <label for="companyName">Company Name (Optional)</label>
+            <input type="text" id="companyName" placeholder="e.g. DAMMIE OPTIMUS">
+        </div>
+        <div class="form-group">
+            <label for="separatorCount">Separator Line Dashes</label>
+            <input type="number" id="separatorCount" value="40" min="10" max="100">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="rawInput">Paste Raw Data Here</label>
+        <textarea id="rawInput" placeholder="Paste your messy text here...
+Example: 
+5673829777748902 AIRTEL 500
+46985149948848407 MTN 100"></textarea>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-primary" onclick="processData()"><i class="fas fa-magic"></i> Format EPINs</button>
+        <button class="btn-secondary" onclick="copyToClipboard()"><i class="fas fa-copy"></i> Copy Text</button>
+        <button class="btn-secondary" onclick="downloadImages()"><i class="fas fa-image"></i> Download Images</button>
+    </div>
+
+    <div id="outputContainer" class="output-section">
+        <label>Text Output (Ready for Bluetooth Printer)</label>
+        <div id="textOutput" class="output-box"></div>
+    </div>
+</div>
+
+<!-- Hidden Container for Image Generation -->
+<div id="visual-container-wrapper">
+    <div id="visual-render-area" style="background: white; padding: 20px; width: fit-content;">
+        <!-- Cards injected here -->
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast">Message here</div>
+
+<script>
+    // --- Logic Configuration ---
+    const LOAD_CODE_SUFFIX = "*311*PIN#";
+    
+    function showToast(message) {
+        const x = document.getElementById("toast");
+        x.textContent = message;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+
+    // --- Core Processing Function ---
+    function processData() {
+        const rawText = document.getElementById('rawInput').value;
+        const companyName = document.getElementById('companyName').value.trim();
+        const separatorCount = parseInt(document.getElementById('separatorCount').value) || 40;
+        const separatorLine = "-".repeat(separatorCount);
+
+        if (!rawText.trim()) {
+            showToast("Please paste some data first!");
+            return;
+        }
+
+        // 1. Split into lines
+        const lines = rawText.split(/\n/);
+        let processedCards = [];
+
+        // 2. Iterate and Parse
+        lines.forEach(line => {
+            // Logic: Find the PIN first (15-17 digits)
+            const pinMatch = line.match(/\b\d{15,17}\b/);
+            
+            if (pinMatch) {
+                const pin = pinMatch[0];
+                
+                // Remove the PIN from the line so we don't accidentally match numbers inside it
+                const remainingText = line.replace(pin, "");
+
+                // Detect Network
+                let network = "UNKNOWN";
+                if (/airtel/i.test(remainingText)) network = "AIRTEL";
+                else if (/mtn/i.test(remainingText)) network = "MTN";
+                else if (/glo/i.test(remainingText)) network = "GLO";
+                else if (/9mobile|etisalat/i.test(remainingText)) network = "9MOBILE";
+
+                // Detect Amount (Look for 100, 200, 500, 1000 surrounded by word boundaries)
+                let amount = "???";
+                const amountMatch = remainingText.match(/\b(100|200|500|1000)\b/);
+                if (amountMatch) {
+                    amount = amountMatch[0];
+                }
+
+                // Format PIN (Groups of 4)
+                const formattedPin = pin.match(/.{1,4}/g).join('-');
+
+                processedCards.push({
+                    company: companyName,
+                    network: network,
+                    amount: amount,
+                    pin: formattedPin,
+                    loadCode: LOAD_CODE_SUFFIX
+                });
+            }
+        });
+
+        if (processedCards.length === 0) {
+            showToast("No valid EPINs found in text.");
+            return;
+        }
+
+        // 3. Generate Text Output
+        let textOutputString = "";
+        processedCards.forEach(card => {
+            // Line 1: Company Name (Only if provided)
+            if (card.company) {
+                textOutputString += `${card.company.toUpperCase()}\n`;
+            }
+            // Line 2: Network + Amount
+            textOutputString += `${card.network} ₦${card.amount}\n`;
+            // Line 3: PIN + Load Code (On same line as requested)
+            textOutputString += `${card.pin} ${card.loadCode}\n`;
+            // Line 4: Separator
+            textOutputString += `${separatorLine}\n`;
+        });
+
+        document.getElementById('textOutput').innerText = textOutputString;
+        document.getElementById('outputContainer').classList.add('visible');
+
+        // 4. Generate Visual Output (Hidden DOM)
+        const visualArea = document.getElementById('visual-render-area');
+        visualArea.innerHTML = ""; // Clear previous
+
+        processedCards.forEach(card => {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'visual-card';
+            
+            // Map logo class for color
+            let logoClass = "UNKNOWN";
+            if(card.network === "MTN") logoClass = "MTN";
+            if(card.network === "AIRTEL") logoClass = "AIRTEL";
+            if(card.network === "GLO") logoClass = "GLO";
+            if(card.network === "9MOBILE") logoClass = "MOBILE";
+
+            cardDiv.innerHTML = `
+                <div class="visual-logo ${logoClass}">${card.network}</div>
+                <div class="visual-details">
+                    ${card.company ? `<div class="v-company">${card.company}</div>` : ''}
+                    <div class="v-network">${card.network} ₦${card.amount}</div>
+                    <div class="v-pin">${card.pin}</div>
+                    <div class="v-load">Dial ${card.loadCode}</div>
+                </div>
+            `;
+            visualArea.appendChild(cardDiv);
+        });
+
+        showToast(`${processedCards.length} EPINs Formatted Successfully!`);
+    }
+
+    // --- Copy Function ---
+    function copyToClipboard() {
+        const text = document.getElementById('textOutput').innerText;
+        if (!text) {
+            showToast("Nothing to copy!");
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            showToast("Copied to Clipboard!");
+        }).catch(err => {
+            showToast("Failed to copy.");
+            console.error(err);
+        });
+    }
+
+    // --- Download Image Function ---
+    function downloadImages() {
+        const element = document.getElementById("visual-render-area");
+        if (element.children.length === 0) {
+            showToast("Please format data first.");
+            return;
+        }
+
+        showToast("Generating Image... Please Wait");
+        
+        // We capture the hidden visual container
+        html2canvas(element, { 
+            scale: 2 // High quality
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'EPIN_Vouchers.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            showToast("Image Downloaded!");
+        });
+    }
+</script>
+
+</body>
+</html>
