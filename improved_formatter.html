@@ -399,10 +399,10 @@ Example:
             if (card.company) {
                 textOutputString += `${card.company.toUpperCase()}\n`;
             }
-            // Line 2: Network + Amount
-            textOutputString += `${card.network} ₦${card.amount}\n`;
-            // Line 3: PIN + Load Code (On same line as requested)
-            textOutputString += `${card.pin} ${card.loadCode}\n`;
+            // Line 2: Network + Amount + Load Code
+            textOutputString += `${card.network} ₦${card.amount} ${card.loadCode}\n`;
+            // Line 3: PIN
+            textOutputString += `${card.pin}\n`;
             // Line 4: Separator
             textOutputString += `${separatorLine}\n`;
         });
